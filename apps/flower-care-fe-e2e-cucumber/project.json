@@ -1,0 +1,32 @@
+{
+  "name": "flower-care-fe-e2e-cucumber",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/flower-care-fe-e2e-cucumber/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@gnuechtel/nx-cucumber:cucumber-js",
+      "outputs": [
+        "{workspaceRoot}/dist/cucumber-js/apps/flower-care-fe-e2e-cucumber",
+        "{workspaceRoot}/dist/coverage/apps/flower-care-fe-e2e-cucumber"
+      ],
+      "options": {
+        "featuresDirectory": "apps/flower-care-fe-e2e-cucumber/features",
+        "tags": "not @ignore",
+        "testRunner": "core",
+        "reportOptions": {
+          "reports": ["html-built-in", "html-beautiful"]
+        }
+      },
+      "dependsOn": ["^build"]
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/flower-care-fe-e2e-cucumber/**/*.ts"]
+      }
+    }
+  },
+  "implicitDependencies": ["flower-care-fe"]
+}
