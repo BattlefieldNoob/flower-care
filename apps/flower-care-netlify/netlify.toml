@@ -1,7 +1,7 @@
 [build]
 # Static files from this folder will be served at the root of the site.
 publish = "apps/flower-care-netlify/public"
-functions = "./functions"
+functions = "apps/flower-care-netlify/functions"
 command = "nx run flower-care-netlify:lint"
 
 [functions]
