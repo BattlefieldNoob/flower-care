@@ -1,6 +1,7 @@
 [build]
 # Static files from this folder will be served at the root of the site.
-publish = "public"
+publish = "apps/flower-care-netlify/public"
+functions = "apps/flower-care-netlify/functions"
 
 [functions]
 # Directory with serverless functions, including background
