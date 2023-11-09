@@ -56,7 +56,10 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/flower-care-netlify/**/*.ts"]
+        "lintFilePatterns": [
+          "apps/flower-care-netlify/**/*.ts",
+          "./functions/**/*.ts"
+        ]
       }
     },
     "test": {
@@ -69,6 +72,25 @@
     "docker-build": {
       "dependsOn": ["build"],
       "command": "docker build -f apps/flower-care-netlify/Dockerfile . -t flower-care-netlify"
+    },
+    "serve-functions": {
+      "command": "npx netlify dev",
+      "options": {
+        "cwd": "apps/flower-care-netlify"
+      }
+    },
+    "deploy-functions": {
+      "dependsOn": ["lint"],
+      "command": "npx netlify deploy --site hungry-lewin-8de986",
+      "options": {
+        "cwd": "apps/flower-care-netlify"
+      },
+      "configurations": {
+        "production": {
+          "command": "npx netlify deploy --site hungry-lewin-8de986 --prod",
+          "cwd": "apps/flower-care-netlify"
+        }
+      }
     }
   },
   "tags": []
