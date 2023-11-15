@@ -4,12 +4,12 @@ import { Do, bind, bindW, mapBoth, tap } from "fp-ts/lib/TaskEither";
 
 console.log('Hello World');
 
-const flowerCareMacAddress = 'C4:7C:8D:66:3A:2C';
+const flowerCareMacAddress = 'C4:7C:8D:6C:D5:1D';
 
 const flowerCare = new FlowerCareModule();
 const connectAndGetData = pipe(
     Do,
-    bind('device', () => flowerCare.discoverAndConnect(flowerCareMacAddress)),
+    bind('device', () => flowerCare.discoverAndConnect(flowerCareMacAddress.toLowerCase())),
     bindW('serial', ({ device }) => flowerCare.executeDeviceSerialQuery(device)),
     bindW('data', ({ device }) => flowerCare.executeSensorDataQuery(device)),
 );

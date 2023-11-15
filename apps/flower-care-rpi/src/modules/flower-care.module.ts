@@ -1,5 +1,5 @@
 import { toError } from 'fp-ts/lib/Either';
-import { TaskEither, flatMap, fromPredicate, mapLeft, of, tryCatch } from 'fp-ts/lib/TaskEither';
+import { TaskEither, flatMap, left, mapLeft, of, tryCatch } from 'fp-ts/lib/TaskEither';
 import { pipe } from 'fp-ts/lib/function';
 import * as miflora from 'miflora';
 
@@ -57,10 +57,10 @@ export class FlowerCareModule {
     discoverAndConnect(macAddress: string): TaskEither<DiscoverError | ConnectError, miflora.MiFloraDevice> {
         return pipe(
             this.discover(macAddress),
-            this.validateDevices(macAddress),
-            flatMap((devices) => pipe(
-                this.connect(devices[0]),
-                flatMap(() => of(devices[0]))
+            flatMap((devices) => this.validateDevices(devices, macAddress)),
+            flatMap((device) => pipe(
+                this.connect(device),
+                flatMap(() => of(device))
             ))
         );
     }
@@ -107,14 +107,15 @@ export class FlowerCareModule {
             }))
     }
 
-    private validateDevices(macAddress: string): (fa: TaskEither<DiscoverError, miflora.MiFloraDevice[]>) => TaskEither<DiscoverError, miflora.MiFloraDevice> {
-        return fromPredicate((devices) => devices.length > 0, () => {
-            return {
+    private validateDevices(devices: miflora.MiFloraDevice[], macAddress: string): TaskEither<DiscoverError, miflora.MiFloraDevice> {
+        if (devices.length > 0)
+            return of(devices[0]);
+        else
+            return left({
                 type: 'discoverError',
                 macAddress: macAddress,
                 message: 'Device not found'
-            };
-        });
+            });
     }
 
     private discover(macAddress: string): TaskEither<DiscoverError, miflora.MiFloraDevice[]> {
