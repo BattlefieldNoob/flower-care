@@ -3526,6 +3526,13 @@
   dependencies:
     "@nx/workspace" "17.1.1"
 
+"@nx-bun/nx@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@nx-bun/nx/-/nx-1.1.0.tgz#b224faa9e3c8ff0960c4d2dd8f54c3a6b5fdf6e8"
+  integrity sha512-o62tGO73DVRiJ1TFWnRbU3VoVCbwntYwddh9AEIb3buOTvV7XH1GMVrrW5ZzS4HM5PRC406QzUL8hh4rAsvbdQ==
+  dependencies:
+    tslib "^2.3.0"
+
 "@nx/angular@17.1.1":
   version "17.1.1"
   resolved "https://registry.yarnpkg.com/@nx/angular/-/angular-17.1.1.tgz#9ff47d1169fcd02e96ef2a59c6e6b3e758c73972"
@@ -10116,6 +10123,11 @@ ee-first@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
   integrity sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==
+
+effect@^2.0.0-next.55:
+  version "2.0.0-next.55"
+  resolved "https://registry.yarnpkg.com/effect/-/effect-2.0.0-next.55.tgz#d9bed6f08038db3825d48a3a9848d7aad37e81e8"
+  integrity sha512-kNOB/HaDSdaFSDVXK2gyf4XcTKbKKlllyoS871uDyoJskcc+024sSOHnNioXZPgkqaz55a3mad4DFfLUIETwYQ==
 
 ejs@^3.1.7, ejs@^3.1.8:
   version "3.1.9"

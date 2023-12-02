@@ -1,52 +1,55 @@
-import { pipe } from "fp-ts/lib/function";
-import { FlowerCareModule } from "./modules/flower-care.module";
-import { Do, bind, bindW, mapBoth, tap } from "fp-ts/lib/TaskEither";
+import { Effect, Console } from "effect"
+
 
 console.log('Hello World');
 
-const flowerCareMacAddress = 'C4:7C:8D:6C:D5:1D';
+// const flowerCareMacAddress = 'C4:7C:8D:6C:D5:1D';
 
-const flowerCare = new FlowerCareModule();
-const connectAndGetData = pipe(
-    Do,
-    bind('device', () => flowerCare.discoverAndConnect(flowerCareMacAddress.toLowerCase())),
-    bindW('serial', ({ device }) => flowerCare.executeDeviceSerialQuery(device)),
-    bindW('data', ({ device }) => flowerCare.executeSensorDataQuery(device)),
-);
+// const flowerCare = new FlowerCareModule();
+// const connectAndGetData = pipe(
+//     Do,
+//     bind('device', () => flowerCare.discoverAndConnect(flowerCareMacAddress.toLowerCase())),
+//     bindW('serial', ({ device }) => flowerCare.executeDeviceSerialQuery(device)),
+//     bindW('data', ({ device }) => flowerCare.executeSensorDataQuery(device)),
+// );
 
 
-(async () => {
-    const runCode = async () => {
-        console.log('Running code...');
-        const result = await pipe(
-            connectAndGetData,
-            tap(({ device }) => {
-                console.log('Disconnecting from device...');
-                return flowerCare.disconnect(device);
-            }),
-            mapBoth(
-                (err) => {
-                    console.error(err);
-                    return err;
-                },
-                ({ serial, data }) => {
-                    console.log('Serial:', serial);
-                    console.log('Data:', data);
-                    return { serial, data }
-                }
-            )
-        )();
+// (async () => {
+//     const runCode = async () => {
+//         console.log('Running code...');
+//         const result = await pipe(
+//             connectAndGetData,
+//             tap(({ device }) => {
+//                 console.log('Disconnecting from device...');
+//                 return flowerCare.disconnect(device);
+//             }),
+//             mapBoth(
+//                 (err) => {
+//                     console.error(err);
+//                     return err;
+//                 },
+//                 ({ serial, data }) => {
+//                     console.log('Serial:', serial);
+//                     console.log('Data:', data);
+//                     return { serial, data }
+//                 }
+//             )
+//         )();
 
-        console.log('Result:', result);
-    }
+//         console.log('Result:', result);
+//     }
 
-    // Run the code immediately
-    console.log('Starting code...');
-    await runCode();
+//     // Run the code immediately
+//     console.log('Starting code...');
+//     await runCode();
 
-    // Run the code every 30 minutes
-    setInterval(() => {
-        console.log('Running code...');
-        runCode();
-    }, 30 * 60 * 1000);
-})();
+//     // Run the code every 30 minutes
+//     setInterval(() => {
+//         console.log('Running code...');
+//         runCode();
+//     }, 30 * 60 * 1000);
+// })();
+
+const program = Console.log('Hello World');
+
+Effect.runSync(program)
