@@ -1,7 +1,7 @@
-import { Effect, Either, pipe } from 'effect';
-import { tryMapPromise, tryPromise } from 'effect/Effect';
+import { Context, Effect, Either, Layer, pipe } from 'effect';
+import { tryPromise } from 'effect/Effect';
 import { flatMap } from 'effect/Either';
-import * as miflora from 'miflora';
+import { MiFloraDevice, MiFloraModule } from './miflora-ble.module';
 
 type DiscoverError = {
     _tag: 'discoverError';
@@ -57,10 +57,24 @@ function toError(e: unknown): Error {
     return e instanceof Error ? e : new Error(String(e));
 }
 
-export class FlowerCareModule {
+export interface FlowerCareModule {
+    discoverAndConnect(macAddress: string): Effect.Effect<never, DiscoverError | ConnectError, MiFloraDevice>;
+    disconnect(device: MiFloraDevice): Effect.Effect<never, DisconnectError, void>;
+    executeDeviceSerialQuery(device: MiFloraDevice): Effect.Effect<never, QueryError, DeviceSerialQueryResult>;
+    executeSensorDataQuery(device: MiFloraDevice): Effect.Effect<never, QueryError, SensorDataQueryResult>;
+}
 
+export const FlowerCareModule = Context.Tag<FlowerCareModule>();
 
-    discoverAndConnect(macAddress: string): Effect.Effect<never, DiscoverError | ConnectError, miflora.MiFloraDevice> {
+export const FlowerCareModuleLive = Layer.effect(
+    FlowerCareModule,
+    Effect.map(MiFloraModule, (miflorableModule) => FlowerCareModule.of(new FlowerCareModuleImpl(miflorableModule)))
+)
+
+export class FlowerCareModuleImpl implements FlowerCareModule {
+    constructor(private readonly miflorableModule: MiFloraModule) { }
+
+    discoverAndConnect(macAddress: string): Effect.Effect<never, DiscoverError | ConnectError, MiFloraDevice> {
         return pipe(
             this.discover(macAddress),
             flatMap((devices) => this.validateDevices(devices, macAddress)),
@@ -71,10 +85,10 @@ export class FlowerCareModule {
         );
     }
 
-    disconnect(device: miflora.MiFloraDevice): Effect.Effect<never, DisconnectError, void> {
+    disconnect(device: MiFloraDevice): Effect.Effect<never, DisconnectError, void> {
         return pipe(
             tryPromise({
-                try: () => device.disconnect(),
+                try: () => this.miflorableModule.disconnect(device),
                 catch: (err) => {
                     return {
                         _tag: 'disconnectError',
@@ -86,10 +100,10 @@ export class FlowerCareModule {
         )
     }
 
-    executeDeviceSerialQuery(device: miflora.MiFloraDevice): Effect.Effect<never, QueryError, DeviceSerialQueryResult> {
+    executeDeviceSerialQuery(device: MiFloraDevice): Effect.Effect<never, QueryError, DeviceSerialQueryResult> {
         return pipe(
             tryPromise({
-                try: () => device.querySerial(),
+                try: () => this.miflorableModule.querySerial(device),
                 catch: (err) => {
                     return {
                         _tag: 'queryError',
@@ -101,10 +115,10 @@ export class FlowerCareModule {
         );
     }
 
-    executeSensorDataQuery(device: miflora.MiFloraDevice): Effect.Effect<never, QueryError, SensorDataQueryResult> {
+    executeSensorDataQuery(device: MiFloraDevice): Effect.Effect<never, QueryError, SensorDataQueryResult> {
         return pipe(
             tryPromise({
-                try: () => device.query() as Promise<SensorDataQueryResult>,
+                try: () => this.miflorableModule.query(device),
                 catch: (err) => {
                     return {
                         _tag: 'queryError',
@@ -116,7 +130,7 @@ export class FlowerCareModule {
         )
     }
 
-    private discover(macAddress: string): Effect.Effect<never, DiscoverError, miflora.MiFloraDevice[]> {
+    private discover(macAddress: string): Effect.Effect<never, DiscoverError, MiFloraDevice[]> {
         const opts = {
             duration: 5000,
             ignoreUnknown: true,
@@ -124,7 +138,7 @@ export class FlowerCareModule {
         };
         return pipe(
             Effect.tryPromise({
-                try: () => miflora.discover(opts),
+                try: () => this.miflorableModule.discover(opts),
                 catch: (err) => {
                     return {
                         _tag: 'discoverError',
@@ -136,7 +150,7 @@ export class FlowerCareModule {
         )
     }
 
-    private validateDevices(devices: miflora.MiFloraDevice[], macAddress: string): Either.Either<DiscoverError, miflora.MiFloraDevice> {
+    private validateDevices(devices: MiFloraDevice[], macAddress: string): Either.Either<DiscoverError, MiFloraDevice> {
         if (devices.length > 0)
             return Either.right(devices[0]);
         else
@@ -147,10 +161,10 @@ export class FlowerCareModule {
             });
     }
 
-    private connect(device: miflora.MiFlora): Effect.Effect<never, ConnectError, void> {
+    private connect(device: MiFloraDevice): Effect.Effect<never, ConnectError, void> {
         return pipe(
             Effect.tryPromise({
-                try: () => device.connect(),
+                try: () => this.miflorableModule.connect(device),
                 catch: (err) => {
                     return {
                         _tag: 'connectError',
