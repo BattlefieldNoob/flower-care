@@ -1,55 +1,46 @@
-import { Effect, Console } from "effect"
+import { Effect, pipe } from "effect"
+import { Do, bind } from "effect/Effect";
+import { FlowerCareModule } from "./modules/flower-care.module";
 
 
 console.log('Hello World');
 
-// const flowerCareMacAddress = 'C4:7C:8D:6C:D5:1D';
 
-// const flowerCare = new FlowerCareModule();
-// const connectAndGetData = pipe(
-//     Do,
-//     bind('device', () => flowerCare.discoverAndConnect(flowerCareMacAddress.toLowerCase())),
-//     bindW('serial', ({ device }) => flowerCare.executeDeviceSerialQuery(device)),
-//     bindW('data', ({ device }) => flowerCare.executeSensorDataQuery(device)),
-// );
+(async () => {
+    const runProgram = () => {
+        const flowerCareMacAddress = 'C4:7C:8D:6C:D5:1D';
 
+        const flowerCare = new FlowerCareModule();
+        const connectAndGetData = pipe(
+            Do,
+            bind('device', () => flowerCare.discoverAndConnect(flowerCareMacAddress.toLowerCase())),
+            bind('serial', ({ device }) => flowerCare.executeDeviceSerialQuery(device)),
+            bind('data', ({ device }) => flowerCare.executeSensorDataQuery(device)),
+        );
+        
+        const program = pipe(
+            connectAndGetData,
+            Effect.tap(({ device }) => {
+                console.log('Disconnecting from device...');
+                return flowerCare.disconnect(device);
+            }),
+            Effect.map(({ data, serial }) => {
+                console.log('Serial:', serial);
+                console.log('Data:', data);
+                return { serial, data }
+            })
+        );
+        
+        Effect.runSync(program);
+    }
 
-// (async () => {
-//     const runCode = async () => {
-//         console.log('Running code...');
-//         const result = await pipe(
-//             connectAndGetData,
-//             tap(({ device }) => {
-//                 console.log('Disconnecting from device...');
-//                 return flowerCare.disconnect(device);
-//             }),
-//             mapBoth(
-//                 (err) => {
-//                     console.error(err);
-//                     return err;
-//                 },
-//                 ({ serial, data }) => {
-//                     console.log('Serial:', serial);
-//                     console.log('Data:', data);
-//                     return { serial, data }
-//                 }
-//             )
-//         )();
+    // Run the code immediately
+    console.log('Starting code...');
+    runProgram();
 
-//         console.log('Result:', result);
-//     }
-
-//     // Run the code immediately
-//     console.log('Starting code...');
-//     await runCode();
-
-//     // Run the code every 30 minutes
-//     setInterval(() => {
-//         console.log('Running code...');
-//         runCode();
-//     }, 30 * 60 * 1000);
-// })();
-
-const program = Console.log('Hello World');
-
-Effect.runSync(program)
+    // Run the code every 30 minutes
+    setInterval(() => {
+        console.log('Running code...');
+        runProgram();
+    }, 30 * 60 * 1000);
+})();
