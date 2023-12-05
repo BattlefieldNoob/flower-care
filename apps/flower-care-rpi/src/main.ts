@@ -1,15 +1,14 @@
 import { Effect, Layer, pipe } from "effect"
-import { Do, bind } from "effect/Effect";
+import { MiFloraModuleTest } from "./modules/miflora-test.module";
 import { FlowerCareModule, FlowerCareModuleLive } from "./modules/flower-care.module";
-import { MiFloraModuleTest } from "./modules/miflora-ble.module";
-
+import { Do, bind } from "effect/Effect";
 
 console.log('Hello World');
 
+const flowerCareMacAddress = 'C4:7C:8D:6C:D5:1D';
 
 (async () => {
-    const runProgram = () => {
-        const flowerCareMacAddress = 'C4:7C:8D:6C:D5:1D';
+    const runProgram = async () => {
 
         const program = FlowerCareModule.pipe(
             Effect.flatMap((flowerCare) => {
@@ -33,7 +32,7 @@ console.log('Hello World');
 
         const runnable = Effect.provide(program, MainLive)
 
-        Effect.runSync(runnable);
+        await Effect.runPromise(runnable);
     }
 
     // Run the code immediately
