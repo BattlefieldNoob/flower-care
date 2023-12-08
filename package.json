@@ -22,7 +22,6 @@
     "axios": "^1.6.1",
     "cross-fetch": "^4.0.0",
     "effect": "^2.0.0-next.55",
-    "fp-ts": "^2.16.1",
     "graphql": "^16.8.1",
     "miflora": "^1.0.6",
     "react": "^18.2.0",
