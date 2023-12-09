@@ -80,11 +80,22 @@
     },
     "container": {
       "executor": "@nx-tools/nx-container:build",
+      "defaultConfiguration": "development",
       "dependsOn": [
         "build"
       ],
       "options": {
         "engine": "docker",
+        "cache-from": [
+          "type=gha"
+        ],
+        "cache-to": [
+          "type=gha,mode=max"
+        ],
+        "platforms": [
+          "linux/amd64",
+          "linux/arm64"
+        ],
         "metadata": {
           "images": [
             "flower-care-rpi",
@@ -99,18 +110,18 @@
             "type=semver,pattern={{version}}",
             "type=semver,pattern={{major}}.{{minor}}",
             "type=semver,pattern={{major}}"
-          ],
-          "push": true,
-          "cache-from": [
-            "type=gha"
-          ],
-          "cache-to": [
-            "type=gha,mode=max"
-          ],
-          "platforms": [
-            "linux/amd64",
-            "linux/arm64"
           ]
+        },
+        "push": true
+      },
+      "configurations": {
+        "development": {
+          "platforms": [
+            "linux/amd64"
+          ],
+          "push": false
+        },
+        "production": {
         }
       }
     }
