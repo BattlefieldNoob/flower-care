@@ -42,6 +42,8 @@
     "@angular/language-service": "17.0.2",
     "@cucumber/cucumber": "^10.0.1",
     "@gnuechtel/nx-cucumber": "^1.0.0-rc.6",
+    "@nx-tools/container-metadata": "^5.1.0",
+    "@nx-tools/nx-container": "^5.1.0",
     "@nx/devkit": "17.1.1",
     "@nx/esbuild": "17.1.1",
     "@nx/eslint": "17.1.1",

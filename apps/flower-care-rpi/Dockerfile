@@ -4,21 +4,31 @@
 # Tip: Modify "docker-build" options in project.json to change docker build args.
 #
 # Run the container with `docker run -p 3000:3000 -t flower-care-rpi`.
-FROM docker.io/node:lts-alpine
-
-ENV HOST=0.0.0.0
-ENV PORT=3000
+FROM nikolaik/python-nodejs:python3.12-nodejs20-slim as builder
 
 WORKDIR /app
 
 RUN addgroup --system flower-care-rpi && \
-          adduser --system -G flower-care-rpi flower-care-rpi
+          useradd --system -g flower-care-rpi flower-care-rpi
+
+RUN apt update && apt install -y build-essential libudev-dev
+#RUN apk update && apk add --no-cache build-base linux-headers eudev-dev
 
 COPY dist/apps/flower-care-rpi flower-care-rpi
-RUN chown -R flower-care-rpi:flower-care-rpi .
 
 # You can remove this install step if you build with `--bundle` option.
 # The bundled output will include external dependencies.
-RUN npm --prefix flower-care-rpi --omit=dev -f install
+RUN cd flower-care-rpi && yarn install --production --frozen-lockfile --prefer-offline
+
+FROM docker.io/node:lts-alpine
+
+WORKDIR /app
+
+COPY --from=builder app/flower-care-rpi  flower-care-rpi
+
+RUN addgroup --system flower-care-rpi && \
+          adduser --system -G flower-care-rpi flower-care-rpi
+
+RUN chown -R flower-care-rpi:flower-care-rpi .
 
 CMD [ "node", "flower-care-rpi" ]

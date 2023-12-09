@@ -11,8 +11,7 @@
       "options": {
         "platform": "node",
         "outputPath": "dist/apps/flower-care-rpi",
-        "format": ["cjs"],
-        "bundle": false,
+        "format": ["esm", "cjs"],
         "main": "apps/flower-care-rpi/src/main.ts",
         "tsConfig": "apps/flower-care-rpi/tsconfig.app.json",
         "assets": ["apps/flower-care-rpi/src/assets"],
@@ -66,9 +65,13 @@
         "jestConfig": "apps/flower-care-rpi/jest.config.ts"
       }
     },
-    "docker-build": {
-      "dependsOn": ["build"],
-      "command": "docker build -f apps/flower-care-rpi/Dockerfile . -t flower-care-rpi"
+    "docker-build-arm": {
+      "dependsOn": ["clean", "build"],
+      "command": "docker build --platform=linux/arm64 -f apps/flower-care-rpi/Dockerfile . -t flower-care-rpi"
+    },
+    "docker-build-amd": {
+      "dependsOn": ["clean", "build"],
+      "command": "docker build --platform=linux/amd64 -f apps/flower-care-rpi/Dockerfile . -t flower-care-rpi"
     }
   },
   "tags": []
