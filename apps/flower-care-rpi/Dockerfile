@@ -20,14 +20,14 @@ COPY dist/apps/flower-care-rpi flower-care-rpi
 # The bundled output will include external dependencies.
 RUN cd flower-care-rpi && yarn install --production --frozen-lockfile --prefer-offline
 
-FROM docker.io/node:lts-alpine
+FROM docker.io/node:lts-slim
 
 WORKDIR /app
 
 COPY --from=builder app/flower-care-rpi  flower-care-rpi
 
 RUN addgroup --system flower-care-rpi && \
-          adduser --system -G flower-care-rpi flower-care-rpi
+          useradd --system -g flower-care-rpi flower-care-rpi
 
 RUN chown -R flower-care-rpi:flower-care-rpi .
 
