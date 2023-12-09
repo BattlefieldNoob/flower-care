@@ -10,6 +10,9 @@ on:
     branches:
       - main
 
+env:
+    REGISTRY: ghcr.io
+
 # Needed for nx-set-shas within nx-cloud-main.yml, when run on the main branch
 permissions:
   actions: read
@@ -27,6 +30,14 @@ jobs:
 
         - name: Set up Docker Buildx
           uses: docker/setup-buildx-action@v2
+
+        - name: Log into registry
+          if: github.event_name != 'pull_request'
+          uses: docker/login-action@v3
+          with:
+            registry: ${{ env.REGISTRY }}
+            username: ${{ github.actor }}
+            password: ${{ secrets.GITHUB_TOKEN }}
 
         - uses: actions/setup-node@v4
           with:
