@@ -6,15 +6,22 @@
   "targets": {
     "build": {
       "executor": "@nx/esbuild:esbuild",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "defaultConfiguration": "production",
       "options": {
         "platform": "node",
         "outputPath": "dist/apps/flower-care-rpi",
-        "format": ["esm", "cjs"],
+        "format": [
+          "esm",
+          "cjs"
+        ],
         "main": "apps/flower-care-rpi/src/main.ts",
         "tsConfig": "apps/flower-care-rpi/tsconfig.app.json",
-        "assets": ["apps/flower-care-rpi/src/assets"],
+        "assets": [
+          "apps/flower-care-rpi/src/assets"
+        ],
         "generatePackageJson": true,
         "esbuildOptions": {
           "sourcemap": true,
@@ -53,25 +60,59 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["apps/flower-care-rpi/**/*.ts"]
+        "lintFilePatterns": [
+          "apps/flower-care-rpi/**/*.ts"
+        ]
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/coverage/{projectRoot}"
+      ],
       "options": {
         "jestConfig": "apps/flower-care-rpi/jest.config.ts"
       }
     },
-    "docker-build-arm": {
-      "dependsOn": ["clean", "build"],
-      "command": "docker build --platform=linux/arm64 -f apps/flower-care-rpi/Dockerfile . -t flower-care-rpi"
-    },
-    "docker-build-amd": {
-      "dependsOn": ["clean", "build"],
-      "command": "docker build --platform=linux/amd64 -f apps/flower-care-rpi/Dockerfile . -t flower-care-rpi"
+    "container": {
+      "executor": "@nx-tools/nx-container:build",
+      "dependsOn": [
+        "build"
+      ],
+      "options": {
+        "engine": "docker",
+        "metadata": {
+          "images": [
+            "flower-care-rpi",
+            "ghcr.io/battlefieldnoob/flower-care-rpi"
+          ],
+          "tags": [
+            "type=schedule",
+            "type=ref,event=branch",
+            "type=ref,event=tag",
+            "type=ref,event=pr",
+            "type=sha,prefix=sha-",
+            "type=semver,pattern={{version}}",
+            "type=semver,pattern={{major}}.{{minor}}",
+            "type=semver,pattern={{major}}"
+          ],
+          "push": true,
+          "cache-from": [
+            "type=gha"
+          ],
+          "cache-to": [
+            "type=gha,mode=max"
+          ],
+          "platforms": [
+            "linux/amd64",
+            "linux/arm64"
+          ]
+        }
+      }
     }
   },
   "tags": []
