@@ -98,7 +98,6 @@
         ],
         "metadata": {
           "images": [
-            "flower-care-rpi",
             "ghcr.io/battlefieldnoob/flower-care-rpi"
           ],
           "tags": [
@@ -119,6 +118,12 @@
           "platforms": [
             "linux/amd64"
           ],
+          "metadata": {
+            "images": [
+              "flower-care-rpi",
+              "ghcr.io/battlefieldnoob/flower-care-rpi"
+            ]
+          },
           "push": false
         },
         "production": {
