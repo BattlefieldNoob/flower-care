@@ -1,0 +1,7 @@
+version: "3.1"
+services:
+  flower-care-rpi:
+    image: ghcr.io/battlefieldnoob/flower-care-rpi:pr-1
+    network_mode: host
+    privileged: true
+    restart: unless-stopped
