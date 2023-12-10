@@ -3564,10 +3564,10 @@
   dependencies:
     "@nx/workspace" "17.1.1"
 
-"@nx-bun/nx@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@nx-bun/nx/-/nx-1.1.0.tgz#b224faa9e3c8ff0960c4d2dd8f54c3a6b5fdf6e8"
-  integrity sha512-o62tGO73DVRiJ1TFWnRbU3VoVCbwntYwddh9AEIb3buOTvV7XH1GMVrrW5ZzS4HM5PRC406QzUL8hh4rAsvbdQ==
+"@nx-bun/nx@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@nx-bun/nx/-/nx-1.2.0.tgz#82fe4e7504fdd3a0f36a2744667d89a871209c5e"
+  integrity sha512-0xYsg6qfQudc1NOYvEKnTDm4XM2C8MJRDtIsp7cpUWPeWzGUi4YRIIgAenjd4ZLz+Hsa+Q8unMAqdX5zHGwRlQ==
   dependencies:
     tslib "^2.3.0"
 
