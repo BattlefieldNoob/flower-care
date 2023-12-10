@@ -1,7 +1,9 @@
-import { Effect, Layer, Schedule, pipe } from "effect"
+import { Effect, Schedule, pipe } from "effect"
 import { FlowerCareModule, FlowerCareModuleLive } from "./modules/flower-care.module";
-import { Do, bind } from "effect/Effect";
+import { Do, bind, flatMap, log, logInfo, mapError, provide, retry, runPromise, tap } from "effect/Effect";
 import { MiFloraModuleLive } from "./modules/miflora-ble.module";
+import { netlifyFunctionClient } from "./modules/netlify-function-client";
+import { MiFloraModuleTest } from "./modules/miflora-test.module";
 
 console.log('Hello World');
 
@@ -18,7 +20,7 @@ const flowerCareMacAddress = 'C4:7C:8D:6C:D5:1D';
 
 
     const program = FlowerCareModule.pipe(
-        Effect.flatMap((flowerCare) => {
+        flatMap((flowerCare) => {
             return pipe(
                 Do,
                 bind('device', () => flowerCare.discoverAndConnect(flowerCareMacAddress.toLowerCase())),
@@ -27,23 +29,23 @@ const flowerCareMacAddress = 'C4:7C:8D:6C:D5:1D';
                 bind('_', ({ device }) => flowerCare.disconnect(device)),
             )
         }),
-        Effect.tap(({ data, serial }) => {
-            return Effect.logInfo(`Serial: ${JSON.stringify(serial)}`)
-                .pipe(Effect.flatMap(() => Effect.logInfo(`Data: ${JSON.stringify(data)}`)))
-        }))
-
-
-    const MainLive = MiFloraModuleLive.pipe(
-        Layer.provide(FlowerCareModuleLive)
+        tap(({ data, serial }) => {
+            return logInfo(`Serial: ${JSON.stringify(serial)}`)
+                .pipe(flatMap(() => logInfo(`Data: ${JSON.stringify(data)}`)))
+        }),
+        flatMap(({ data }) => netlifyFunctionClient(data.sensorValues)),
+        tap(() => logInfo(`Successfully sent data to the server`))
     )
 
-    const runnable = Effect.provide(program, MainLive)
+    const runnable = provide(
+        provide(program, FlowerCareModuleLive), 
+        MiFloraModuleTest)
 
-    const retryableRunnable = Effect.retry(
-        Effect.log('Executing try of runnable...')
+    const retryableRunnable = retry(
+        log('Executing try of runnable...')
             .pipe(
-                Effect.flatMap(() => runnable),
-                Effect.mapError(error => {
+                flatMap(() => runnable),
+                mapError(error => {
                     console.error('Error after retries:', error);
                     return error
                 })
@@ -51,15 +53,15 @@ const flowerCareMacAddress = 'C4:7C:8D:6C:D5:1D';
         retryPolicy)
 
     const scheduledRunnable = Effect.schedule(
-        Effect.log('Executing scheduled runnable...')
-            .pipe(Effect.flatMap(() => retryableRunnable)),
+        log('Executing scheduled runnable...')
+            .pipe(flatMap(() => retryableRunnable)),
         schedule)
 
-    await Effect.runPromise(
-        Effect.log('Starting complete runnable...')
+    await runPromise(
+        log('Starting complete runnable...')
             .pipe(
-                Effect.flatMap(() => retryableRunnable), // First run without delay
-                Effect.flatMap(() => scheduledRunnable) // Then run with delay and schedule
+                flatMap(() => retryableRunnable), // First run without delay
+                flatMap(() => scheduledRunnable) // Then run with delay and schedule
             )
     );
 })();

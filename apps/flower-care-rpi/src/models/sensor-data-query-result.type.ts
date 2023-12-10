@@ -8,6 +8,7 @@ export type SensorData = {
     lux: number;
     moisture: number;
     fertility: number;
+    ts?: string;
 };
 
 export type SensorDataQueryResult = {
