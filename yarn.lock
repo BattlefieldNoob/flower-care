@@ -3564,7 +3564,7 @@
   dependencies:
     "@nx/workspace" "17.1.1"
 
-"@nx-bun/nx@^1.2.0":
+"@nx-bun/nx@1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@nx-bun/nx/-/nx-1.2.0.tgz#82fe4e7504fdd3a0f36a2744667d89a871209c5e"
   integrity sha512-0xYsg6qfQudc1NOYvEKnTDm4XM2C8MJRDtIsp7cpUWPeWzGUi4YRIIgAenjd4ZLz+Hsa+Q8unMAqdX5zHGwRlQ==
@@ -8282,6 +8282,11 @@ builtins@^5.0.0:
   integrity sha512-qwVpFEHNfhYJIzNRBvd2C1kyo6jz3ZSMPyyuR47OPdiKWlbYnZNyDWuyR175qDnAJLiCo5fBBqPb3RiXgWlkOQ==
   dependencies:
     semver "^7.0.0"
+
+bun-types@latest:
+  version "1.0.15"
+  resolved "https://registry.yarnpkg.com/bun-types/-/bun-types-1.0.15.tgz#6905c697627a1690f23512986c47260330f48c3d"
+  integrity sha512-XkEvWLV1JIhcVIpf2Lu6FXnZUxRUkQVJmgY+VT7os6Tk5X1nkXx11q4Rtu6txsqpDJZfUeZXblnnD59K+6wsVA==
 
 byline@^5.0.0:
   version "5.0.0"

@@ -4,23 +4,27 @@
 # Tip: Modify "docker-build" options in project.json to change docker build args.
 #
 # Run the container with `docker run -p 3000:3000 -t flower-care-rpi`.
-FROM nikolaik/python-nodejs:python3.12-nodejs20-slim as builder
 
-WORKDIR /app
 
-RUN addgroup --system flower-care-rpi && \
-          useradd --system -g flower-care-rpi flower-care-rpi
+FROM oven/bun:latest as builder
 
-RUN apt update && apt install -y build-essential libudev-dev
-#RUN apk update && apk add --no-cache build-base linux-headers eudev-dev
+WORKDIR /app/flower-care-rpi
 
-COPY dist/apps/flower-care-rpi flower-care-rpi
+COPY package.json ./
 
-# You can remove this install step if you build with `--bundle` option.
-# The bundled output will include external dependencies.
-RUN cd flower-care-rpi && yarn install --production --frozen-lockfile --prefer-offline
+COPY bun.lockb ./
 
-FROM docker.io/node:lts-slim
+#RUN apt update && apt install -y build-essential libudev-dev python3-dev 
+
+#RUN bun install --ignore-scripts
+
+COPY /node_modules/@abandonware ./node_modules/@abandonware
+COPY /node_modules/miflora ./node_modules/miflora
+COPY /node_modules/debug ./node_modules/debug
+COPY /node_modules/ms ./node_modules/ms
+
+COPY dist/apps/flower-care-rpi ./
+FROM oven/bun:slim 
 
 WORKDIR /app
 
@@ -31,4 +35,4 @@ RUN addgroup --system flower-care-rpi && \
 
 RUN chown -R flower-care-rpi:flower-care-rpi .
 
-CMD [ "node", "flower-care-rpi" ]
+CMD [ "bun", "flower-care-rpi/main.js" ]

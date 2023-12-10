@@ -5,49 +5,45 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nx/esbuild:esbuild",
+      "executor": "@nx-bun/nx:build",
       "outputs": [
         "{options.outputPath}"
       ],
       "defaultConfiguration": "production",
       "options": {
-        "platform": "node",
+        "entrypoints": ["apps/flower-care-rpi/src/main.ts"],
         "outputPath": "dist/apps/flower-care-rpi",
-        "format": [
-          "esm",
-          "cjs"
-        ],
-        "main": "apps/flower-care-rpi/src/main.ts",
         "tsConfig": "apps/flower-care-rpi/tsconfig.app.json",
+        "smol": false,
+        "minify": true,
+        "bun": true,
+        "external": [
+          "miflora"
+        ],
+        "sourcemap": "external",
         "assets": [
           "apps/flower-care-rpi/src/assets"
-        ],
-        "generatePackageJson": true,
-        "esbuildOptions": {
-          "sourcemap": true,
-          "outExtension": {
-            ".js": ".js"
-          }
-        }
+        ]
       },
       "configurations": {
-        "development": {},
+        "development": {
+          "minify": false,
+          "sourcemap": "inline",
+          "splitting": true
+        },
         "production": {
-          "generateLockfile": true,
-          "esbuildOptions": {
-            "sourcemap": false,
-            "outExtension": {
-              ".js": ".js"
-            }
-          }
         }
       }
     },
     "serve": {
-      "executor": "@nx/js:node",
+      "executor": "@nx-bun/nx:run",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "flower-care-rpi:build"
+        "buildTarget": "flower-care-rpi:build",
+        "tsConfig": "apps/flower-care-rpi/tsconfig.app.json",
+        "watch": true,
+        "bun": true,
+        "smol": false
       },
       "configurations": {
         "development": {
@@ -126,8 +122,7 @@
           },
           "push": false
         },
-        "production": {
-        }
+        "production": {}
       }
     }
   },
