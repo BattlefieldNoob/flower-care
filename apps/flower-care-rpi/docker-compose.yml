@@ -5,3 +5,14 @@ services:
     network_mode: host
     privileged: true
     restart: unless-stopped
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/pi/.docker/config.json:/config.json
+    command: --interval 30
+    environment:
+     WATCHTOWER_NOTIFICATION_URL: "telegram://1493869823:AAF5RNGyBUoeZsH3LhrIARLNDmI0mSpoHO0@telegram?chats=-1002094704703&preview=No"
+     WATCHTOWER_DEBUG: "true"
+     WATCHTOWER_CLEANUP: "true"
+    restart: unless-stopped
