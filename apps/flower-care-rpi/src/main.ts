@@ -3,7 +3,6 @@ import { FlowerCareModule, FlowerCareModuleLive } from "./modules/flower-care.mo
 import { Do, bind, flatMap, log, logInfo, mapError, provide, retry, runPromise, tap } from "effect/Effect";
 import { MiFloraModuleLive } from "./modules/miflora-ble.module";
 import { netlifyFunctionClient } from "./modules/netlify-function-client";
-import { MiFloraModuleTest } from "./modules/miflora-test.module";
 
 console.log('Hello World');
 
@@ -39,7 +38,7 @@ const flowerCareMacAddress = 'C4:7C:8D:6C:D5:1D';
 
     const runnable = provide(
         provide(program, FlowerCareModuleLive), 
-        MiFloraModuleTest)
+        MiFloraModuleLive)
 
     const retryableRunnable = retry(
         log('Executing try of runnable...')

@@ -1,13 +1,21 @@
 import { Effect, pipe } from "effect";
-import { SensorData } from "../models/sensor-data-query-result.type";
+import { SensorData, SensorDataRequest } from "../models/sensor-data-query-result.type";
 
-const baseUrl = "https://hungry-lewin-8de986.netlify.app/";
+const baseUrl = "https://hungry-lewin-8de986.netlify.app";
 const path = ".netlify/functions/readings-create";
 
 
-const copyWithTimestamp = (data: SensorData) => {
+const generateSensorDataRequest = (data: SensorData): SensorDataRequest => {
     const ts = new Date().toISOString();
-    return { ...data, ts };
+    const battery = 46;
+    return {
+        battery: battery,
+        fertility: data.fertility,
+        moisture: data.moisture,
+        sunlight: data.lux,
+        temperature: data.temperature,
+        ts
+    }
 }
 
 export const netlifyFunctionClient = (data: SensorData) => pipe(
@@ -17,7 +25,7 @@ export const netlifyFunctionClient = (data: SensorData) => pipe(
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(copyWithTimestamp(data))
+            body: JSON.stringify(generateSensorDataRequest(data))
         }),
         catch: (error) => {
             return error
