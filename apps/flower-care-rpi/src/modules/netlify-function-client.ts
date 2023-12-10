@@ -1,7 +1,7 @@
 import { Effect, pipe } from "effect";
 import { SensorData } from "../models/sensor-data-query-result.type";
 
-const baseUrl = "https://65760301bb45755144524c4b--hungry-lewin-8de986.netlify.app/";
+const baseUrl = "https://hungry-lewin-8de986.netlify.app/";
 const path = ".netlify/functions/readings-create";
 
 
