@@ -1,154 +1,144 @@
-import { toError } from 'fp-ts/lib/Either';
-import { TaskEither, flatMap, left, mapLeft, of, tryCatch } from 'fp-ts/lib/TaskEither';
-import { pipe } from 'fp-ts/lib/function';
-import * as miflora from 'miflora';
+import { Context, Layer, pipe } from 'effect';
+import { tryPromise, flatMap, map, Effect, succeed } from 'effect/Effect';
+import { Either, left, right } from 'effect/Either';
+import { MiFloraModule } from '../models/miflora-module.interface';
+import { MiFloraDevice } from '../models/miflora-device.interface';
+import { DeviceSerialQueryResult } from '../models/device-serial-query-result.type';
+import { SensorDataQueryResult } from '../models/sensor-data-query-result.type';
 
 type DiscoverError = {
-    type: 'discoverError';
+    _tag: 'discoverError';
     message: string;
     macAddress: string;
 };
 
 type ConnectError = {
-    type: 'connectError';
+    _tag: 'connectError';
     message: string;
     macAddress: string;
 };
 
 type DisconnectError = {
-    type: 'disconnectError';
+    _tag: 'disconnectError';
     message: string;
     macAddress: string;
 };
 
 type QueryError = {
-    type: 'queryError';
+    _tag: 'queryError';
     message: string;
     macAddress: string;
 };
 
-type FirmwareInfo = {
-    battery: number;
-    firmware: string;
-};
-
-type SensorData = {
-    temperature: number;
-    lux: number;
-    moisture: number;
-    fertility: number;
-};
-
-type SensorDataQueryResult = {
-    address: string,
-    type: string,
-    firmwareInfo: FirmwareInfo,
-    sensorValues: SensorData
+function toError(e: unknown): Error {
+    return e instanceof Error ? e : new Error(String(e));
 }
 
-type DeviceSerialQueryResult = {
-    address: string,
-    type: string,
-    serial: string
+export interface FlowerCareModule {
+    discoverAndConnect(macAddress: string): Effect<never, DiscoverError | ConnectError, MiFloraDevice>;
+    disconnect(device: MiFloraDevice): Effect<never, DisconnectError, void>;
+    executeDeviceSerialQuery(device: MiFloraDevice): Effect<never, QueryError, DeviceSerialQueryResult>;
+    executeSensorDataQuery(device: MiFloraDevice): Effect<never, QueryError, SensorDataQueryResult>;
 }
 
-export class FlowerCareModule {
+export const FlowerCareModule = Context.Tag<FlowerCareModule>();
 
-    discoverAndConnect(macAddress: string): TaskEither<DiscoverError | ConnectError, miflora.MiFloraDevice> {
-        return pipe(
-            this.discover(macAddress),
+export const FlowerCareModuleLive = Layer.effect(
+    FlowerCareModule,
+    map(MiFloraModule, (miflorableModule) => FlowerCareModule.of(new FlowerCareModuleImpl(miflorableModule)))
+)
+
+export class FlowerCareModuleImpl implements FlowerCareModule {
+    constructor(private readonly miflorableModule: MiFloraModule) { }
+
+    discoverAndConnect(macAddress: string): Effect<never, DiscoverError | ConnectError, MiFloraDevice> {
+        return this.discover(macAddress).pipe(
             flatMap((devices) => this.validateDevices(devices, macAddress)),
             flatMap((device) => pipe(
                 this.connect(device),
-                flatMap(() => of(device))
+                flatMap(() => succeed(device))
             ))
         );
     }
 
-    executeDeviceSerialQuery(device: miflora.MiFloraDevice): TaskEither<QueryError, DeviceSerialQueryResult> {
-        return pipe(
-            tryCatch(() =>
-                device.querySerial() as Promise<DeviceSerialQueryResult>,
-                toError),
-            mapLeft((err) => {
+    disconnect(device: MiFloraDevice): Effect<never, DisconnectError, void> {
+        return tryPromise({
+            try: () => this.miflorableModule.disconnect(device),
+            catch: (err) => {
                 return {
-                    type: 'queryError',
+                    _tag: 'disconnectError',
                     macAddress: device.address,
-                    message: err.message
+                    message: toError(err).message
                 };
-            }))
+            }
+        })
     }
 
-    executeSensorDataQuery(device: miflora.MiFloraDevice): TaskEither<QueryError, SensorDataQueryResult> {
-        return pipe(
-            tryCatch(() =>
-                device.query() as Promise<SensorDataQueryResult>,
-                toError),
-            mapLeft((err) => {
+    executeDeviceSerialQuery(device: MiFloraDevice): Effect<never, QueryError, DeviceSerialQueryResult> {
+        return tryPromise({
+            try: () => this.miflorableModule.querySerial(device),
+            catch: (err) => {
                 return {
-                    type: 'queryError',
+                    _tag: 'queryError',
                     macAddress: device.address,
-                    message: err.message
+                    message: toError(err).message
                 };
-            }))
+            }
+        });
     }
 
-    disconnect(device: miflora.MiFloraDevice): TaskEither<DisconnectError, void> {
-        return pipe(
-            tryCatch(() =>
-                device.disconnect() as Promise<void>,
-                toError),
-            mapLeft((err) => {
+    executeSensorDataQuery(device: MiFloraDevice): Effect<never, QueryError, SensorDataQueryResult> {
+        return tryPromise({
+            try: () => this.miflorableModule.query(device),
+            catch: (err) => {
                 return {
-                    type: 'disconnectError',
+                    _tag: 'queryError',
                     macAddress: device.address,
-                    message: err.message
+                    message: toError(err).message
                 };
-            }))
+            }
+        });
     }
 
-    private validateDevices(devices: miflora.MiFloraDevice[], macAddress: string): TaskEither<DiscoverError, miflora.MiFloraDevice> {
-        if (devices.length > 0)
-            return of(devices[0]);
-        else
-            return left({
-                type: 'discoverError',
-                macAddress: macAddress,
-                message: 'Device not found'
-            });
-    }
-
-    private discover(macAddress: string): TaskEither<DiscoverError, miflora.MiFloraDevice[]> {
+    private discover(macAddress: string): Effect<never, DiscoverError, MiFloraDevice[]> {
         const opts = {
             duration: 5000,
             ignoreUnknown: true,
             addresses: [macAddress]
         };
-        return pipe(
-            tryCatch(
-                () => miflora.discover(opts) as Promise<miflora.MiFloraDevice[]>,
-                toError),
-            mapLeft((err) => {
+        return tryPromise({
+            try: async () => this.miflorableModule.discover(opts),
+            catch: (err) => {
                 return {
-                    type: 'discoverError',
+                    _tag: 'discoverError',
                     macAddress: macAddress,
-                    message: err.message
-                };
-            })
-        );
+                    message: toError(err).message
+                } as DiscoverError;
+            }
+        })
     }
 
-    private connect(device: miflora.MiFlora): TaskEither<ConnectError, void> {
-        return pipe(
-            tryCatch(
-                () => device.connect() as Promise<void>,
-                toError),
-            mapLeft((err) => {
+    private validateDevices(devices: MiFloraDevice[], macAddress: string): Either<DiscoverError, MiFloraDevice> {
+        if (devices.length > 0)
+            return right(devices[0]);
+        else
+            return left({
+                _tag: 'discoverError',
+                macAddress: macAddress,
+                message: 'Device not found'
+            });
+    }
+
+    private connect(device: MiFloraDevice): Effect<never, ConnectError, void> {
+        return tryPromise({
+            try: () => this.miflorableModule.connect(device),
+            catch: (err) => {
                 return {
-                    type: 'connectError',
+                    _tag: 'connectError',
                     macAddress: device.address,
-                    message: err.message
+                    message: toError(err).message
                 };
-            }));
+            }
+        });
     }
 }
