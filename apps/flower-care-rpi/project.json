@@ -14,7 +14,6 @@
         "platform": "node",
         "outputPath": "dist/apps/flower-care-rpi",
         "format": [
-          "esm",
           "cjs"
         ],
         "main": "apps/flower-care-rpi/src/main.ts",

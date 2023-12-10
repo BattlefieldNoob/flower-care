@@ -1,14 +1,5 @@
-export type FirmwareInfo = {
-    battery: number;
-    firmware: string;
-};
-
-export type SensorData = {
-    temperature: number;
-    lux: number;
-    moisture: number;
-    fertility: number;
-};
+import { SensorData } from '@flower-care/libs/data-models';
+import { FirmwareInfo } from './firmware-info.type';
 
 export type SensorDataQueryResult = {
     address: string,
