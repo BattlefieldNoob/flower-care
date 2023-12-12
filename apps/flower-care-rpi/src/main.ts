@@ -1,4 +1,4 @@
-import { Effect, Schedule, pipe } from "effect"
+import { Config, Duration, Effect, Schedule, pipe } from "effect"
 import { FlowerCareModule, FlowerCareModuleLive } from "./modules/flower-care.module";
 import { Do, bind, flatMap, log, logInfo, mapError, provide, retry, runPromise, tap } from "effect/Effect";
 import { MiFloraModuleLive } from "./modules/miflora-ble.module";
@@ -13,11 +13,7 @@ const flowerCareMacAddress = 'C4:7C:8D:6C:D5:1D';
         Schedule.recurs(2), // Retry for a maximum of 2 times
         () => "300 millis" // Add a delay of 300 milliseconds between retries
     )
-
-    // Run the code every 30 minutes
-    const schedule = Schedule.fixed("30 minutes")
-
-
+    
     const program = FlowerCareModule.pipe(
         flatMap((flowerCare) => {
             return pipe(
@@ -37,7 +33,7 @@ const flowerCareMacAddress = 'C4:7C:8D:6C:D5:1D';
     )
 
     const runnable = provide(
-        provide(program, FlowerCareModuleLive), 
+        provide(program, FlowerCareModuleLive),
         MiFloraModuleLive)
 
     const retryableRunnable = retry(
@@ -51,10 +47,13 @@ const flowerCareMacAddress = 'C4:7C:8D:6C:D5:1D';
             ),
         retryPolicy)
 
-    const scheduledRunnable = Effect.schedule(
-        log('Executing scheduled runnable...')
-            .pipe(flatMap(() => retryableRunnable)),
-        schedule)
+    const scheduledRunnable = pipe(
+        Effect.config(Config.withDefault(Config.string("SAMPLE_INTERVAL"), "30 minutes")),
+        Effect.tap((config) => log(`Configuring runnable with interval ${config}...`)),
+        Effect.map((config) => Schedule.fixed(config as Duration.DurationInput)),
+        Effect.flatMap((interval) => {
+            return Effect.schedule(retryableRunnable, interval);
+        }))
 
     await runPromise(
         log('Starting complete runnable...')
