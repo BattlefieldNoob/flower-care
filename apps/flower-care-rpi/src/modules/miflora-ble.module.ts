@@ -6,6 +6,10 @@ import { SensorDataQueryResult } from '../models/sensor-data-query-result.type';
 import { MiFloraDevice } from '../models/miflora-device.interface';
 
 class MifloraBleModule implements MiFlora {
+    clearDeviceCache() {
+        miflora._devices = {};
+    }
+    
     async discover(opt: DiscoverOpt): Promise<MiFloraDevice[]> {
         console.log('Discovering...');
         return await miflora.discover(opt);

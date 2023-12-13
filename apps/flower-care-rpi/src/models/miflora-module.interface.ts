@@ -15,6 +15,7 @@ export interface MiFloraModule {
     disconnect(device: MiFloraDevice): Promise<void>;
     querySerial(device: MiFloraDevice): Promise<DeviceSerialQueryResult>;
     query(device: MiFloraDevice): Promise<SensorDataQueryResult>;
+    clearDeviceCache();
 }
 
 export const MiFloraModule = Context.Tag<MiFloraModule>();
