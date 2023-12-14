@@ -11,7 +11,7 @@ WORKDIR /app
 RUN addgroup --system flower-care-rpi && \
           useradd --system -g flower-care-rpi flower-care-rpi
 
-RUN apt update && apt install -y build-essential libudev-dev
+RUN apt update && apt install -y build-essential libudev-dev git
 #RUN apk update && apk add --no-cache build-base linux-headers eudev-dev
 
 COPY dist/apps/flower-care-rpi flower-care-rpi
