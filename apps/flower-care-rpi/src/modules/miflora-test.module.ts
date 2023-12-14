@@ -63,8 +63,6 @@ const MiFloraTest: MiFloraModule = {
     query: function (device: MiFloraDevice): Promise<SensorDataQueryResult> {
         console.log('Mock Querying...');
         return device.query();
-    },
-    clearDeviceCache: function () {
     }
 };
 

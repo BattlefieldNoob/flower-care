@@ -104,6 +104,7 @@ export class FlowerCareModuleImpl implements FlowerCareModule {
         const opts = {
             duration: 5000,
             ignoreUnknown: true,
+            clearDevices: true,
             addresses: [macAddress]
         };
         return tryPromise({
