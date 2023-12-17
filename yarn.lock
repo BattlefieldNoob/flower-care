@@ -15413,9 +15413,9 @@ micromatch@^4.0.0, micromatch@^4.0.2, micromatch@^4.0.4:
     braces "^3.0.2"
     picomatch "^2.3.1"
 
-"miflora@https://github.com/sidequestlegend/miflora.git#1280e82f024e18585a7e6fc2b5ddaeb28d3803f5":
+"miflora@https://github.com/BattlefieldNoob/miflora.git#d9100db53938219d295e30364cf95d5bf80f7d2a":
   version "1.0.6"
-  resolved "https://github.com/sidequestlegend/miflora.git#1280e82f024e18585a7e6fc2b5ddaeb28d3803f5"
+  resolved "https://github.com/BattlefieldNoob/miflora.git#d9100db53938219d295e30364cf95d5bf80f7d2a"
   dependencies:
     "@abandonware/noble" "^1.9.2-10"
     debug "^4.3.0"

@@ -23,7 +23,7 @@
     "cross-fetch": "^4.0.0",
     "effect": "^2.0.0-next.55",
     "graphql": "^16.8.1",
-    "miflora": "https://github.com/sidequestlegend/miflora.git#1280e82f024e18585a7e6fc2b5ddaeb28d3803f5",
+    "miflora": "https://github.com/BattlefieldNoob/miflora.git#d9100db53938219d295e30364cf95d5bf80f7d2a",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "rxjs": "~7.8.0",
