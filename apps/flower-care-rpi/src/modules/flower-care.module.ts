@@ -49,6 +49,9 @@ export const FlowerCareModuleLive = Layer.effect(
 )
 
 export class FlowerCareModuleImpl implements FlowerCareModule {
+
+    private scannedDevices: MiFloraDevice[] = [];
+
     constructor(private readonly miflorableModule: MiFloraModule) { }
 
     discoverAndConnect(macAddress: string): Effect<never, DiscoverError | ConnectError, MiFloraDevice> {
@@ -101,6 +104,11 @@ export class FlowerCareModuleImpl implements FlowerCareModule {
     }
 
     private discover(macAddress: string): Effect<never, DiscoverError, MiFloraDevice[]> {
+        if(this.scannedDevices.length >= 1 && this.scannedDevices[0].address === macAddress){
+            console.log('Device already scanned, returning cached device...');
+            return succeed(this.scannedDevices);
+        }
+
         const opts = {
             duration: 5000,
             ignoreUnknown: true,
