@@ -116,7 +116,10 @@ export class FlowerCareModuleImpl implements FlowerCareModule {
             addresses: [macAddress]
         };
         return tryPromise({
-            try: async () => this.miflorableModule.discover(opts),
+            try: async () => {
+                this.scannedDevices = await this.miflorableModule.discover(opts)
+                return this.scannedDevices;
+            },
             catch: (err) => {
                 return {
                     _tag: 'discoverError',
