@@ -1,7 +1,7 @@
 import { Layer } from "effect";
 import { MiFloraDevice } from "../models/miflora-device.interface";
 import { DeviceSerialQueryResult } from "../models/device-serial-query-result.type";
-import { SensorDataQueryResult } from "../models/sensor-data-query-result.type";
+import { SensorQueryResult } from "../models/sensor-data-query-result.type";
 import { MiFloraModule } from "../models/miflora-module.interface";
 
 
@@ -23,7 +23,7 @@ const mockDevice: MiFloraDevice = {
             serial: ''
         });
     },
-    query: function (): Promise<SensorDataQueryResult> {
+    query: function (): Promise<SensorQueryResult> {
         return Promise.resolve({
             address: '',
             type: '',
@@ -60,7 +60,7 @@ const MiFloraTest: MiFloraModule = {
         console.log('Mock Querying Serial...');
         return device.querySerial();
     },
-    query: function (device: MiFloraDevice): Promise<SensorDataQueryResult> {
+    query: function (device: MiFloraDevice): Promise<SensorQueryResult> {
         console.log('Mock Querying...');
         return device.query();
     }

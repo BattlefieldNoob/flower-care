@@ -9,15 +9,14 @@
       "outputs": [
         "{options.outputPath}"
       ],
-      "defaultConfiguration": "production",
+      "defaultConfiguration": "development",
       "options": {
         "platform": "node",
         "outputPath": "dist/apps/flower-care-rpi",
         "format": [
-          "esm",
           "cjs"
         ],
-        "main": "apps/flower-care-rpi/src/main.ts",
+        "main": "apps/flower-care-rpi/src/main.local.ts",
         "tsConfig": "apps/flower-care-rpi/tsconfig.app.json",
         "assets": [
           "apps/flower-care-rpi/src/assets"
@@ -31,7 +30,9 @@
         }
       },
       "configurations": {
-        "development": {},
+        "development": {
+          "main": "apps/flower-care-rpi/src/main.local.ts"
+        },
         "production": {
           "generateLockfile": true,
           "esbuildOptions": {

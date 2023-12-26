@@ -1,40 +1,24 @@
-import { Config, Duration, Effect, Schedule, pipe } from "effect"
-import { FlowerCareModule, FlowerCareModuleLive } from "./modules/flower-care.module";
-import { Do, bind, flatMap, log, logInfo, mapError, provide, retry, runPromise, tap } from "effect/Effect";
+import { Config, Duration, Effect, Layer, Schedule, pipe } from "effect"
+import { FlowerCareModuleLive } from "./modules/flower-care.module";
+import { flatMap, log, mapError, provide, retry, runPromise } from "effect/Effect";
 import { MiFloraModuleLive } from "./modules/miflora-ble.module";
-import { netlifyFunctionClient } from "./modules/netlify-function-client";
+import { program } from "./modules/main.module";
+import { HttpModuleLive } from "./modules/http-netlify.module";
 
 console.log('Hello World');
-
-const flowerCareMacAddress = 'C4:7C:8D:6C:D5:1D';
 
 (async () => {
     const retryPolicy = Schedule.addDelay(
         Schedule.recurs(2), // Retry for a maximum of 2 times
         () => "300 millis" // Add a delay of 300 milliseconds between retries
     )
-    
-    const program = FlowerCareModule.pipe(
-        flatMap((flowerCare) => {
-            return pipe(
-                Do,
-                bind('device', () => flowerCare.discoverAndConnect(flowerCareMacAddress.toLowerCase())),
-                bind('serial', ({ device }) => flowerCare.executeDeviceSerialQuery(device)),
-                bind('data', ({ device }) => flowerCare.executeSensorDataQuery(device)),
-                bind('_', ({ device }) => flowerCare.disconnect(device)),
-            )
-        }),
-        tap(({ data, serial }) => {
-            return logInfo(`Serial: ${JSON.stringify(serial)}`)
-                .pipe(flatMap(() => logInfo(`Data: ${JSON.stringify(data)}`)))
-        }),
-        flatMap(({ data }) => netlifyFunctionClient(data.sensorValues)),
-        tap(() => logInfo(`Successfully sent data to the server`))
-    )
 
-    const runnable = provide(
-        provide(program, FlowerCareModuleLive),
-        MiFloraModuleLive)
+    // Collect dependencies
+    const MainLive = Layer.provide(
+        Layer.merge(MiFloraModuleLive, HttpModuleLive),
+        FlowerCareModuleLive)
+
+    const runnable = provide(program, MainLive)
 
     const retryableRunnable = retry(
         log('Executing try of runnable...')
