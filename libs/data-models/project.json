@@ -1,0 +1,30 @@
+{
+  "name": "libs/data-models",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/data-models/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/data-models",
+        "tsConfig": "libs/data-models/tsconfig.lib.json",
+        "packageJson": "libs/data-models/package.json",
+        "main": "libs/data-models/src/index.ts",
+        "assets": ["libs/data-models/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/data-models/**/*.ts",
+          "libs/data-models/package.json"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

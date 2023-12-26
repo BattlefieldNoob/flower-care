@@ -4,27 +4,27 @@ import { Either, left, right } from 'effect/Either';
 import { MiFloraModule } from '../models/miflora-module.interface';
 import { MiFloraDevice } from '../models/miflora-device.interface';
 import { DeviceSerialQueryResult } from '../models/device-serial-query-result.type';
-import { SensorDataQueryResult } from '../models/sensor-data-query-result.type';
+import { SensorQueryResult } from '../models/sensor-data-query-result.type';
 
-type DiscoverError = {
+export type DiscoverError = {
     _tag: 'discoverError';
     message: string;
     macAddress: string;
 };
 
-type ConnectError = {
+export type ConnectError = {
     _tag: 'connectError';
     message: string;
     macAddress: string;
 };
 
-type DisconnectError = {
+export type DisconnectError = {
     _tag: 'disconnectError';
     message: string;
     macAddress: string;
 };
 
-type QueryError = {
+export type QueryError = {
     _tag: 'queryError';
     message: string;
     macAddress: string;
@@ -38,7 +38,7 @@ export interface FlowerCareModule {
     discoverAndConnect(macAddress: string): Effect<never, DiscoverError | ConnectError, MiFloraDevice>;
     disconnect(device: MiFloraDevice): Effect<never, DisconnectError, void>;
     executeDeviceSerialQuery(device: MiFloraDevice): Effect<never, QueryError, DeviceSerialQueryResult>;
-    executeSensorDataQuery(device: MiFloraDevice): Effect<never, QueryError, SensorDataQueryResult>;
+    executeSensorDataQuery(device: MiFloraDevice): Effect<never, QueryError, SensorQueryResult>;
 }
 
 export const FlowerCareModule = Context.Tag<FlowerCareModule>();
@@ -87,7 +87,7 @@ export class FlowerCareModuleImpl implements FlowerCareModule {
         });
     }
 
-    executeSensorDataQuery(device: MiFloraDevice): Effect<never, QueryError, SensorDataQueryResult> {
+    executeSensorDataQuery(device: MiFloraDevice): Effect<never, QueryError, SensorQueryResult> {
         return tryPromise({
             try: () => this.miflorableModule.query(device),
             catch: (err) => {

@@ -1,5 +1,5 @@
 import { DeviceSerialQueryResult } from "./device-serial-query-result.type";
-import { SensorDataQueryResult } from "./sensor-data-query-result.type";
+import { SensorQueryResult } from "./sensor-data-query-result.type";
 
 export interface MiFloraDevice {
     address: string;
@@ -8,5 +8,5 @@ export interface MiFloraDevice {
     connect(): Promise<MiFloraDevice>;
     disconnect(): Promise<void>;
     querySerial(): Promise<DeviceSerialQueryResult>;
-    query(): Promise<SensorDataQueryResult>;
+    query(): Promise<SensorQueryResult>;
 }

@@ -1,19 +1,10 @@
-export type FirmwareInfo = {
-    battery: number;
-    firmware: string;
-};
+import { FirmwareInfo } from './firmware-info.type';
+import { SensorValues } from './sensor-values.type';
 
-export type SensorData = {
-    temperature: number;
-    lux: number;
-    moisture: number;
-    fertility: number;
-};
-
-export type SensorDataQueryResult = {
+export type SensorQueryResult = {
     address: string,
     type: string,
     _tag: string,
     firmwareInfo: FirmwareInfo,
-    sensorValues: SensorData
+    sensorValues: SensorValues
 }
