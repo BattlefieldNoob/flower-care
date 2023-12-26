@@ -1,10 +1,10 @@
-import { SensorData } from '@flower-care/libs/data-models';
 import { FirmwareInfo } from './firmware-info.type';
+import { SensorValues } from './sensor-values.type';
 
-export type SensorDataQueryResult = {
+export type SensorQueryResult = {
     address: string,
     type: string,
     _tag: string,
     firmwareInfo: FirmwareInfo,
-    sensorValues: SensorData
+    sensorValues: SensorValues
 }

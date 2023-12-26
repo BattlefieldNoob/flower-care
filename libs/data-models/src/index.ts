@@ -1,1 +1,1 @@
-export * from './lib/libs/sensor-data';
+export * from './models/sensor-data.type';

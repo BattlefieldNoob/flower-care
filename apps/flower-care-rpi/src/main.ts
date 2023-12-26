@@ -1,11 +1,9 @@
-import { Effect, Layer, Schedule, pipe } from "effect"
-import { FlowerCareModule, FlowerCareModuleLive } from "./modules/flower-care.module";
-import { Do, bind } from "effect/Effect";
+import { Effect, Layer, Schedule } from "effect"
+import { FlowerCareModuleLive } from "./modules/flower-care.module";
 import { MiFloraModuleLive } from "./modules/miflora-ble.module";
+import { program } from "./modules/main.module";
 
 console.log('Hello World');
-
-const flowerCareMacAddress = 'C4:7C:8D:6C:D5:1D';
 
 (async () => {
     const retryPolicy = Schedule.addDelay(
@@ -16,26 +14,8 @@ const flowerCareMacAddress = 'C4:7C:8D:6C:D5:1D';
     // Run the code every 30 minutes
     const schedule = Schedule.fixed("30 minutes")
 
-
-    const program = FlowerCareModule.pipe(
-        Effect.flatMap((flowerCare) => {
-            return pipe(
-                Do,
-                bind('device', () => flowerCare.discoverAndConnect(flowerCareMacAddress.toLowerCase())),
-                bind('serial', ({ device }) => flowerCare.executeDeviceSerialQuery(device)),
-                bind('data', ({ device }) => flowerCare.executeSensorDataQuery(device)),
-                bind('_', ({ device }) => flowerCare.disconnect(device)),
-            )
-        }),
-        Effect.tap(({ data, serial }) => {
-            return Effect.logInfo(`Serial: ${JSON.stringify(serial)}`)
-                .pipe(Effect.flatMap(() => Effect.logInfo(`Data: ${JSON.stringify(data)}`)))
-        }))
-
-
-    const MainLive = MiFloraModuleLive.pipe(
-        Layer.provide(FlowerCareModuleLive)
-    )
+    // Collect dependencies
+    const MainLive = Layer.provide(MiFloraModuleLive, FlowerCareModuleLive)
 
     const runnable = Effect.provide(program, MainLive)
 
