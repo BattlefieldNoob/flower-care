@@ -1,0 +1,16 @@
+node_modules
+npm-debug.log
+Dockerfile*
+docker-compose*
+.dockerignore
+.git
+.gitignore
+README.md
+LICENSE
+.vscode
+.github
+.devcontainer
+apps
+!apps/flower-care-rpi/Dockerfile
+functions
+libs

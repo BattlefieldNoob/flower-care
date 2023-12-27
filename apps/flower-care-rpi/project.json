@@ -16,12 +16,13 @@
         "format": [
           "cjs"
         ],
-        "main": "apps/flower-care-rpi/src/main.local.ts",
+        "main": "apps/flower-care-rpi/src/main.ts",
         "tsConfig": "apps/flower-care-rpi/tsconfig.app.json",
         "assets": [
           "apps/flower-care-rpi/src/assets"
         ],
         "generatePackageJson": true,
+        "bundle": true,
         "esbuildOptions": {
           "sourcemap": true,
           "outExtension": {
