@@ -7,12 +7,13 @@ import { HttpModuleTest } from "./modules/http-test.module";
 
 (async () => {
     // Collect dependencies
-    const MainTest = Layer.provide(
-        Layer.merge(MiFloraModuleTest, HttpModuleTest),
-        FlowerCareModuleLive)
+    const mainTest = Layer.provide(
+        FlowerCareModuleLive,
+        Layer.merge(MiFloraModuleTest, HttpModuleTest)
+    )
 
     // Make the program runnable by providing the dependencies
-    const runnable = Effect.provide(program, MainTest)
+    const runnable = Effect.provide(program, mainTest)
 
     // Run the program
     await Effect.runPromise(runnable);

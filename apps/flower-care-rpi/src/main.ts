@@ -15,8 +15,9 @@ console.log('Hello World');
 
     // Collect dependencies
     const MainLive = Layer.provide(
-        Layer.merge(MiFloraModuleLive, HttpModuleLive),
-        FlowerCareModuleLive)
+        FlowerCareModuleLive,
+        Layer.merge(MiFloraModuleLive, HttpModuleLive)
+    )
 
     const runnable = provide(program, MainLive)
 
@@ -32,7 +33,7 @@ console.log('Hello World');
         retryPolicy)
 
     const scheduledRunnable = pipe(
-        Effect.config(Config.withDefault(Config.string("SAMPLE_INTERVAL"), "30 minutes")),
+        Config.withDefault(Config.string("SAMPLE_INTERVAL"), "30 minutes"),
         Effect.tap((config) => log(`Configuring runnable with interval ${config}...`)),
         Effect.map((config) => Schedule.fixed(config as Duration.DurationInput)),
         Effect.flatMap((interval) => {
