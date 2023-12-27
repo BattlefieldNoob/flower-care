@@ -1,10 +1,12 @@
 import { Context, Layer, pipe } from 'effect';
-import { tryPromise, flatMap, map, Effect, succeed } from 'effect/Effect';
+import { tryPromise, flatMap, Effect, succeed, gen } from 'effect/Effect';
 import { Either, left, right } from 'effect/Either';
 import { MiFloraModule } from '../models/miflora-module.interface';
 import { MiFloraDevice } from '../models/miflora-device.interface';
 import { DeviceSerialQueryResult } from '../models/device-serial-query-result.type';
 import { SensorQueryResult } from '../models/sensor-data-query-result.type';
+import { SensorSample } from '@flower-care/libs/data-models';
+import { HttpModule } from '../models/http-module.interface';
 
 export type DiscoverError = {
     _tag: 'discoverError';
@@ -30,6 +32,11 @@ export type QueryError = {
     macAddress: string;
 };
 
+export type HttpError = {
+    _tag: 'httpError';
+    message: string;
+};
+
 function toError(e: unknown): Error {
     return e instanceof Error ? e : new Error(String(e));
 }
@@ -39,17 +46,25 @@ export interface FlowerCareModule {
     disconnect(device: MiFloraDevice): Effect<never, DisconnectError, void>;
     executeDeviceSerialQuery(device: MiFloraDevice): Effect<never, QueryError, DeviceSerialQueryResult>;
     executeSensorDataQuery(device: MiFloraDevice): Effect<never, QueryError, SensorQueryResult>;
+    postSampleData(data: SensorSample): Effect<never, HttpError, void>;
 }
 
 export const FlowerCareModule = Context.Tag<FlowerCareModule>();
 
 export const FlowerCareModuleLive = Layer.effect(
     FlowerCareModule,
-    map(MiFloraModule, (miflorableModule) => FlowerCareModule.of(new FlowerCareModuleImpl(miflorableModule)))
+    gen(function* (_) {
+        const mifloraModule = yield* _(MiFloraModule);
+        const httpModule = yield* _(HttpModule);
+        return new FlowerCareModuleImpl(mifloraModule, httpModule);
+    })
 )
 
 export class FlowerCareModuleImpl implements FlowerCareModule {
-    constructor(private readonly miflorableModule: MiFloraModule) { }
+
+    private scannedDevices: MiFloraDevice[] = [];
+
+    constructor(private readonly miflorableModule: MiFloraModule, private readonly httpModule: HttpModule) { }
 
     discoverAndConnect(macAddress: string): Effect<never, DiscoverError | ConnectError, MiFloraDevice> {
         return this.discover(macAddress).pipe(
@@ -100,14 +115,35 @@ export class FlowerCareModuleImpl implements FlowerCareModule {
         });
     }
 
+    postSampleData(data: SensorSample): Effect<never, HttpError, void> {
+        return tryPromise({
+            try: () => this.httpModule.post(data),
+            catch: (err) => {
+                return {
+                    _tag: 'httpError',
+                    message: toError(err).message
+                };
+            }
+        });
+    }
+
     private discover(macAddress: string): Effect<never, DiscoverError, MiFloraDevice[]> {
+        if (this.scannedDevices.length >= 1 && this.scannedDevices[0].address === macAddress) {
+            console.log('Device already scanned, returning cached device...');
+            return succeed(this.scannedDevices);
+        }
+
         const opts = {
             duration: 5000,
             ignoreUnknown: true,
+            clearDevices: true,
             addresses: [macAddress]
         };
         return tryPromise({
-            try: async () => this.miflorableModule.discover(opts),
+            try: async () => {
+                this.scannedDevices = await this.miflorableModule.discover(opts)
+                return this.scannedDevices;
+            },
             catch: (err) => {
                 return {
                     _tag: 'discoverError',

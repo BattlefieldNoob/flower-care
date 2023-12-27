@@ -15559,10 +15559,9 @@ micromatch@^4.0.0, micromatch@^4.0.2, micromatch@^4.0.4:
     braces "^3.0.2"
     picomatch "^2.3.1"
 
-miflora@^1.0.6:
+"miflora@https://github.com/BattlefieldNoob/miflora.git#7f80c2726657441c64a47309d29bc392d144988c":
   version "1.0.6"
-  resolved "https://registry.yarnpkg.com/miflora/-/miflora-1.0.6.tgz#0299735bc2d7a94a6b14ab0a83e7841f5f6dac7f"
-  integrity sha512-R825EkSNwRIVrgRdNSNiULriqqoDwMZ/RxJoqQjNRYKoC/sELGMltho5Bb3x4VSQx/iTl2iPPkYQVs5afuwncQ==
+  resolved "https://github.com/BattlefieldNoob/miflora.git#7f80c2726657441c64a47309d29bc392d144988c"
   dependencies:
     "@abandonware/noble" "^1.9.2-10"
     debug "^4.3.0"

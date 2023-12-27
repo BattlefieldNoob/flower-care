@@ -1,8 +1,8 @@
 export type SensorSample = {
   temperature: number;
-  lux: number;
+  sunlight: number;
   moisture: number;
   fertility: number;
   battery: number;
-  timestamp: string;
+  ts: string;
 };
