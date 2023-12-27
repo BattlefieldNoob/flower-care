@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
         - name: Checkout
-          uses: actions/checkout@v3
+          uses: actions/checkout@v4
           with:
             fetch-depth: 0
 
@@ -42,17 +42,10 @@ jobs:
           with:
             cache: 'yarn'
             node-version-file: '.nvmrc'
+            cache-dependency-path: 'yarn.lock'
 
         - name: 'Install Dependencies'
-          run: yarn install
-
-        - name: Cache Nx
-          uses: actions/cache@v3
-          with:
-            path: .nx/cache
-            key: cache-nx-${{ hashFiles('yarn.lock') }}
-            restore-keys: |
-              cache-nx-${{ hashFiles('yarn.lock') }}
+          run: yarn install --frozen-lockfile
 
         - name: Derive appropriate SHAs for base and head for `nx affected` commands
           uses: nrwl/nx-set-shas@v3
