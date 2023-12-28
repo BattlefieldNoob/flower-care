@@ -6,10 +6,6 @@
 # Run the container with `docker run -p 3000:3000 -t flower-care-rpi`.
 FROM nikolaik/python-nodejs:python3.12-nodejs20-slim as builder
 
-ARG NX_BASE
-ARG NX_HEAD
-ARG CONFIG
-
 WORKDIR /app
 
 RUN addgroup --system flower-care-rpi && \
@@ -24,6 +20,10 @@ COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile --prefer-offline
 
 COPY . .
+
+ARG NX_BASE
+ARG NX_HEAD
+ARG CONFIG
 
 RUN yarn nx affected --base=${NX_BASE} --head=${NX_HEAD} --target=build --configuration=${CONFIG} --parallel=3
 
