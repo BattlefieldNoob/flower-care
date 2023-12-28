@@ -6,7 +6,7 @@
 .vscode
 apps/flower-care-rpi/Dockerfile*
 apps/flower-care-netlify/Dockerfile*
-dist
+#dist
 functions
 node_modules
 tmp
