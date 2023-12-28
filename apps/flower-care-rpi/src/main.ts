@@ -5,7 +5,7 @@ import { MiFloraModuleLive } from "./modules/miflora-ble.module";
 import { program } from "./modules/main.module";
 import { HttpModuleLive } from "./modules/http-netlify.module";
 
-console.log('Hello World');
+console.log('Hello World!');
 
 (async () => {
     const retryPolicy = Schedule.addDelay(
