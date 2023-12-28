@@ -17,7 +17,7 @@ RUN yarn global add node-gyp
 
 COPY package.json yarn.lock ./
 
-RUN yarn install --frozen-lockfile --prefer-offline
+RUN yarn install --frozen-lockfile --prefer-offline --ignore-scripts
 
 COPY . .
 
