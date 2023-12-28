@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start-rpi": "npx nx serve flower-care-rpi"
+    "start-rpi": "npx nx serve flower-care-rpi",
+    "preinstall": "npx only-allow pnpm"
   },
   "private": true,
   "dependencies": {

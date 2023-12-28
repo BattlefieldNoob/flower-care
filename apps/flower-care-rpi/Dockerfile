@@ -12,33 +12,21 @@ RUN addgroup --system flower-care-rpi && \
           useradd --system -g flower-care-rpi flower-care-rpi
 
 RUN apt update && apt install -y build-essential libudev-dev git
+#RUN apk update && apk add --no-cache build-base linux-headers eudev-dev
 
-RUN yarn global add node-gyp
+COPY dist/apps/flower-care-rpi/package.json dist/apps/flower-care-rpi/yarn.lock ./flower-care-rpi/
 
-COPY package.json yarn.lock ./
+RUN cd flower-care-rpi && yarn install --frozen-lockfile --prefer-offline
 
-RUN yarn install --frozen-lockfile --prefer-offline --ignore-scripts
-
-COPY . .
-
-ARG NX_BASE
-ARG NX_HEAD
-ARG CONFIG
-
-RUN yarn nx affected --base=${NX_BASE} --head=${NX_HEAD} --target=build --configuration=${CONFIG} --parallel=3
-
-RUN cd dist/apps/flower-care-rpi && yarn install --frozen-lockfile --prefer-offline --production
+COPY dist/apps/flower-care-rpi flower-care-rpi
 
 FROM docker.io/node:lts-slim
 
 WORKDIR /app
 
-COPY --from=builder app/dist/apps/flower-care-rpi  flower-care-rpi
+COPY --from=builder app/flower-care-rpi  flower-care-rpi
 
 RUN addgroup --system flower-care-rpi && \
           useradd --system -g flower-care-rpi flower-care-rpi
-
-# TODO test with production env
-#RUN chown -R flower-care-rpi:flower-care-rpi .
 
 CMD [ "node", "flower-care-rpi" ]

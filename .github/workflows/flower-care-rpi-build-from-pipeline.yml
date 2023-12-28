@@ -37,7 +37,7 @@ jobs:
             registry: ${{ env.REGISTRY }}
             username: ${{ github.actor }}
             password: ${{ secrets.GITHUB_TOKEN }}
-            
+
         - uses: pnpm/action-setup@v2
           with:
             version: 8
@@ -80,7 +80,7 @@ jobs:
         
         - uses: docker/build-push-action@v5
           with:
-            file: ./apps/flower-care-rpi/Dockerfile.old
+            file: ./apps/flower-care-rpi/Dockerfile
             context: .
             push: true
             platforms: linux/arm64
