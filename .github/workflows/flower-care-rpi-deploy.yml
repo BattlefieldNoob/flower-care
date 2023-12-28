@@ -38,24 +38,14 @@ jobs:
             username: ${{ github.actor }}
             password: ${{ secrets.GITHUB_TOKEN }}
 
-        - uses: actions/setup-node@v4
-          with:
-            cache: 'yarn'
-            node-version-file: '.nvmrc'
-            cache-dependency-path: 'yarn.lock'
-
-        - name: Install node-gyp
-          run: yarn global add node-gyp
-
-        - name: Install Dependencies
-          run: yarn install --frozen-lockfile
-
         - name: Derive appropriate SHAs for base and head for `nx affected` commands
-          uses: nrwl/nx-set-shas@v3
+          id: nx-shas
+          uses: nrwl/nx-set-shas@v4
 
-        - name: Build from nx
-          run: yarn nx affected --base=$NX_BASE --head=$NX_HEAD --target=build --configuration=production --parallel=2
-        
+        - run: |
+            echo "BASE: ${{ steps.nx-shas.outputs.base }}"
+            echo "HEAD: ${{ steps.nx-shas.outputs.head }}"
+
         - name: Docker meta
           id: meta
           uses: docker/metadata-action@v5
@@ -84,7 +74,7 @@ jobs:
             cache-to: type=gha,mode=max
             tags: ${{ steps.meta.outputs.tags }}
             labels: ${{ steps.meta.outputs.labels }}
-
-        # It works, but image cache is not used
-        #- name: 'Image build and push'
-        #  run: INPUT_GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} yarn nx affected --base=$NX_BASE --head=$NX_HEAD --target=container --configuration=production --parallel=2
+            build-args: |
+              NX_BASE=${{ steps.nx-shas.outputs.base }}
+              NX_HEAD=${{ steps.nx-shas.outputs.head }}
+              CONFIG=production

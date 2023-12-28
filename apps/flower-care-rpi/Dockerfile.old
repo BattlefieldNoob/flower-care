@@ -6,39 +6,29 @@
 # Run the container with `docker run -p 3000:3000 -t flower-care-rpi`.
 FROM nikolaik/python-nodejs:python3.12-nodejs20-slim as builder
 
-ARG NX_BASE
-ARG NX_HEAD
-ARG CONFIG
-
 WORKDIR /app
 
 RUN addgroup --system flower-care-rpi && \
           useradd --system -g flower-care-rpi flower-care-rpi
 
 RUN apt update && apt install -y build-essential libudev-dev git
+#RUN apk update && apk add --no-cache build-base linux-headers eudev-dev
 
-RUN yarn global add node-gyp
+COPY dist/apps/flower-care-rpi flower-care-rpi
 
-COPY package.json yarn.lock ./
-
-RUN yarn install --frozen-lockfile --prefer-offline
-
-COPY . .
-
-RUN yarn nx affected --base=${NX_BASE} --head=${NX_HEAD} --target=build --configuration=${CONFIG} --parallel=3
-
-RUN cd dist/apps/flower-care-rpi && yarn install --frozen-lockfile --prefer-offline --production
+# You can remove this install step if you build with `--bundle` option.
+# The bundled output will include external dependencies.
+RUN cd flower-care-rpi && yarn install --production --frozen-lockfile --prefer-offline
 
 FROM docker.io/node:lts-slim
 
 WORKDIR /app
 
-COPY --from=builder app/dist/apps/flower-care-rpi  flower-care-rpi
+COPY --from=builder app/flower-care-rpi  flower-care-rpi
 
 RUN addgroup --system flower-care-rpi && \
           useradd --system -g flower-care-rpi flower-care-rpi
 
-# TODO test with production env
-#RUN chown -R flower-care-rpi:flower-care-rpi .
+RUN chown -R flower-care-rpi:flower-care-rpi .
 
 CMD [ "node", "flower-care-rpi" ]
