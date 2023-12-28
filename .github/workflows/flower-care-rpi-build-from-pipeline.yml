@@ -37,6 +37,10 @@ jobs:
             registry: ${{ env.REGISTRY }}
             username: ${{ github.actor }}
             password: ${{ secrets.GITHUB_TOKEN }}
+            
+        - uses: pnpm/action-setup@v2
+          with:
+            version: 8
 
         - uses: actions/setup-node@v4
           with:
