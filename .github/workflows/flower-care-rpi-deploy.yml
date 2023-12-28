@@ -75,7 +75,7 @@ jobs:
               "type=semver,pattern={{major}}"
         
         - name: 'Image build and push'
-          run: yarn nx affected --base=$NX_BASE --head=$NX_HEAD --target=container --configuration=production --parallel=2
+          run: INPUT_GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} yarn nx affected --base=$NX_BASE --head=$NX_HEAD --target=container --configuration=production --parallel=2
         #- uses: docker/build-push-action@v5
         #  with:
         #    file: ./apps/flower-care-rpi/Dockerfile
