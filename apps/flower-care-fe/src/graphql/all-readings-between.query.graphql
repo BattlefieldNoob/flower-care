@@ -1,0 +1,14 @@
+query AllReadingsBetween($min:DateTime!, $max:DateTime!) {
+    queryReadings(
+        # The number of items to return per page.
+        filter: {ts: {between: {min: $min,max: $max}}}
+    ){
+        # The elements of type 'Readings' in this page.
+        ts,
+        battery,
+        moisture,
+        fertility,
+        sunlight,
+        temperature,
+    }
+}
