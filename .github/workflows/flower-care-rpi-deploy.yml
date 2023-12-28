@@ -56,12 +56,31 @@ jobs:
         - name: 'Build'
           run: yarn nx affected --base=$NX_BASE --head=$NX_HEAD --target=build --configuration=production --parallel=2
         
+        - name: Docker meta
+          id: meta
+          uses: docker/metadata-action@v5
+          with:
+            # list of Docker images to use as base name for tags
+            images: |
+              ghcr.io/battlefieldnoob/flower-care-rpi           
+            # generate Docker tags based on the following events/attributes
+            tags: |
+              "type=schedule",
+              "type=ref,event=branch",
+              "type=ref,event=tag",
+              "type=ref,event=pr",
+              "type=sha,prefix=sha-",
+              "type=semver,pattern={{version}}",
+              "type=semver,pattern={{major}}.{{minor}}",
+              "type=semver,pattern={{major}}"
+        
         - uses: docker/build-push-action@v5
           with:
             file: ./apps/flower-care-rpi/Dockerfile
             context: .
             push: true
-            tags: "ghcr.io/battlefieldnoob/flower-care-rpi:pr-4"
             platforms: linux/arm64
             cache-from: type=gha
             cache-to: type=gha,mode=max
+            tags: ${{ steps.meta.outputs.tags }}
+            labels: ${{ steps.meta.outputs.labels }}
