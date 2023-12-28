@@ -74,13 +74,15 @@ jobs:
               "type=semver,pattern={{major}}.{{minor}}",
               "type=semver,pattern={{major}}"
         
-        - uses: docker/build-push-action@v5
-          with:
-            file: ./apps/flower-care-rpi/Dockerfile
-            context: .
-            push: true
-            platforms: linux/arm64
-            cache-from: type=gha
-            cache-to: type=gha,mode=max
-            tags: ${{ steps.meta.outputs.tags }}
-            labels: ${{ steps.meta.outputs.labels }}
+        - name: 'Image build and push'
+          run: yarn nx affected --base=$NX_BASE --head=$NX_HEAD --target=container --configuration=production --parallel=2
+        #- uses: docker/build-push-action@v5
+        #  with:
+        #    file: ./apps/flower-care-rpi/Dockerfile
+        #    context: .
+        #    push: true
+        #    platforms: linux/arm64
+        #    cache-from: type=gha
+        #    cache-to: type=gha,mode=max
+        #    tags: ${{ steps.meta.outputs.tags }}
+        #    labels: ${{ steps.meta.outputs.labels }}
