@@ -56,6 +56,9 @@ importers:
       miflora:
         specifier: https://github.com/BattlefieldNoob/miflora.git#7f80c2726657441c64a47309d29bc392d144988c
         version: github.com/BattlefieldNoob/miflora/7f80c2726657441c64a47309d29bc392d144988c
+      primeng:
+        specifier: ^17.3.0
+        version: 17.3.0(@angular/common@17.0.8)(@angular/core@17.0.8)(@angular/forms@17.0.8)(rxjs@7.8.1)(zone.js@0.14.2)
       rxjs:
         specifier: ~7.8.0
         version: 7.8.1
@@ -17744,6 +17747,23 @@ packages:
       colors: 1.4.0
       minimist: 1.2.8
     dev: true
+
+  /primeng@17.3.0(@angular/common@17.0.8)(@angular/core@17.0.8)(@angular/forms@17.0.8)(rxjs@7.8.1)(zone.js@0.14.2):
+    resolution: {integrity: sha512-iSn4tl59aj72LXYvUmFlGJ+DEBFCzDuIY97esKJcrO8eszvYtAWzbxi8b7UfY0XFSbYyrZCZuCW4iaJqTmUHMA==}
+    peerDependencies:
+      '@angular/common': ^17.0.0
+      '@angular/core': ^17.0.0
+      '@angular/forms': ^17.0.0
+      rxjs: ^6.0.0 || ^7.8.1
+      zone.js: ~0.14.0
+    dependencies:
+      '@angular/common': 17.0.8(@angular/core@17.0.8)(rxjs@7.8.1)
+      '@angular/core': 17.0.8(rxjs@7.8.1)(zone.js@0.14.2)
+      '@angular/forms': 17.0.8(@angular/common@17.0.8)(@angular/core@17.0.8)(@angular/platform-browser@17.0.8)(rxjs@7.8.1)
+      rxjs: 7.8.1
+      tslib: 2.6.2
+      zone.js: 0.14.2
+    dev: false
 
   /proc-log@3.0.0:
     resolution: {integrity: sha512-++Vn7NS4Xf9NacaU9Xq3URUuqZETPsf8L4j5/ckhaRYsfPeRyzGw+iDjFhV/Jr3uNmTvvddEJFWh5R1gRgUH8A==}
