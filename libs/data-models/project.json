@@ -5,14 +5,15 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nx/js:swc",
+      "executor": "@nx/esbuild:esbuild",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/data-models",
-        "tsConfig": "libs/data-models/tsconfig.lib.json",
-        "packageJson": "libs/data-models/package.json",
         "main": "libs/data-models/src/index.ts",
-        "assets": ["libs/data-models/*.md"]
+        "tsConfig": "libs/data-models/tsconfig.lib.json",
+        "assets": ["libs/data-models/*.md"],
+        "generatePackageJson": true,
+        "format": ["cjs"]
       }
     },
     "lint": {

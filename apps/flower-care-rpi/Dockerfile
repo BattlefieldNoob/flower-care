@@ -14,11 +14,11 @@ RUN addgroup --system flower-care-rpi && \
 RUN apt update && apt install -y build-essential libudev-dev git
 #RUN apk update && apk add --no-cache build-base linux-headers eudev-dev
 
-COPY dist/apps/flower-care-rpi flower-care-rpi
+COPY dist/apps/flower-care-rpi/package.json dist/apps/flower-care-rpi/yarn.lock ./flower-care-rpi/
 
-# You can remove this install step if you build with `--bundle` option.
-# The bundled output will include external dependencies.
-RUN cd flower-care-rpi && yarn install --production --frozen-lockfile --prefer-offline
+RUN cd flower-care-rpi && yarn install --frozen-lockfile --prefer-offline
+
+COPY dist/apps/flower-care-rpi flower-care-rpi
 
 FROM docker.io/node:lts-slim
 
@@ -28,7 +28,5 @@ COPY --from=builder app/flower-care-rpi  flower-care-rpi
 
 RUN addgroup --system flower-care-rpi && \
           useradd --system -g flower-care-rpi flower-care-rpi
-
-RUN chown -R flower-care-rpi:flower-care-rpi .
 
 CMD [ "node", "flower-care-rpi" ]

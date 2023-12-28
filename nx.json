@@ -19,15 +19,6 @@
       "cache": true,
       "inputs": ["default", "^production"]
     },
-    "build-storybook": {
-      "cache": true,
-      "inputs": [
-        "default",
-        "^production",
-        "{projectRoot}/.storybook/**/*",
-        "{projectRoot}/tsconfig.storybook.json"
-      ]
-    },
     "@nx/jest:jest": {
       "cache": true,
       "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
@@ -78,5 +69,6 @@
     "default": {
       "options": {}
     }
-  }
+  },
+  "nxCloudAccessToken": "MzViMzBhZTYtZjU2ZS00NjQ4LTg1N2UtMmQ4OGZhNzhlOTllfHJlYWQtd3JpdGU="
 }

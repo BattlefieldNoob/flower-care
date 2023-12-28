@@ -16,12 +16,13 @@
         "format": [
           "cjs"
         ],
-        "main": "apps/flower-care-rpi/src/main.local.ts",
+        "main": "apps/flower-care-rpi/src/main.ts",
         "tsConfig": "apps/flower-care-rpi/tsconfig.app.json",
         "assets": [
           "apps/flower-care-rpi/src/assets"
         ],
         "generatePackageJson": true,
+        "bundle": true,
         "esbuildOptions": {
           "sourcemap": true,
           "outExtension": {
@@ -82,9 +83,6 @@
     "container": {
       "executor": "@nx-tools/nx-container:build",
       "defaultConfiguration": "development",
-      "dependsOn": [
-        "build"
-      ],
       "options": {
         "engine": "docker",
         "cache-from": [
@@ -94,7 +92,6 @@
           "type=gha,mode=max"
         ],
         "platforms": [
-          "linux/amd64",
           "linux/arm64"
         ],
         "metadata": {
@@ -112,6 +109,9 @@
             "type=semver,pattern={{major}}"
           ]
         },
+        "build-args": [
+          "CONFIG=production"
+        ],
         "push": true
       },
       "configurations": {
@@ -125,6 +125,9 @@
               "ghcr.io/battlefieldnoob/flower-care-rpi"
             ]
           },
+          "build-args": [
+            "CONFIG=development"
+          ],
           "push": false
         },
         "production": {
