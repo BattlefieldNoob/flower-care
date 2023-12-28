@@ -34,7 +34,7 @@ console.log('Hello World!');
 
     const scheduledRunnable = pipe(
         Config.withDefault(Config.string("SAMPLE_INTERVAL"), "30 minutes"),
-        Effect.tap((config) => log(`Configure runnable with interval ${config}...`)),
+        Effect.tap((config) => log(`Configuring runnable with interval ${config}...`)),
         Effect.map((config) => Schedule.fixed(config as Duration.DurationInput)),
         Effect.flatMap((interval) => {
             return Effect.schedule(retryableRunnable, interval);
