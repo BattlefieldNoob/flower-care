@@ -48,19 +48,16 @@ jobs:
             node-version-file: '.nvmrc'
             cache-dependency-path: 'pnpm-lock.yaml'
 
-        - name: 'Install node-gyp'
-          run: pnpm add -g node-gyp
-
         - name: 'Install Dependencies'
           run: pnpm install --frozen-lockfile --prefer-frozen-lockfile --ignore-scripts
 
         - name: Derive appropriate SHAs for base and head for `nx affected` commands
           uses: nrwl/nx-set-shas@v3
 
-        - name: 'Build'
+        - name: 'Nx Build'
           run: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=build --configuration=production --parallel=2
         
-        - name: Docker meta
+        - name: 'Docker meta'
           id: meta
           uses: docker/metadata-action@v5
           with:
