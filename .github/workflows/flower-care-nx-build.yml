@@ -11,6 +11,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
+
         - uses: pnpm/action-setup@v2
           with:
             version: 8
@@ -24,9 +29,18 @@ jobs:
         - name: 'Install Dependencies'
           run: pnpm install --frozen-lockfile --prefer-frozen-lockfile --ignore-scripts
 
-        - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        - name: 'Derive appropriate SHAs for base and head for `nx affected` commands'
           uses: nrwl/nx-set-shas@v3
 
         - name: 'Nx Build'
           run: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=build --configuration=production --parallel=2
+
+        - name: 'Upload Build Artifact'
+          uses: actions/upload-artifact@v4
+          with:
+            name: nx-dist-folder
+            path: dist
+            retention-days: 1
+            if-no-files-found: error
+            compression-level: 0 # no compression
         

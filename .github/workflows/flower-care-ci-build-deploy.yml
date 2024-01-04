@@ -20,16 +20,15 @@ permissions:
   packages: write
 
 jobs:
-  flower-care-rpi-build-and-deploy-docker:
-    runs-on: ubuntu-latest
-    steps:
-        - name: Checkout
-          uses: actions/checkout@v4
-          with:
-            fetch-depth: 0
+  flower-care-nx-build:
+    uses: ./.github/workflows/flower-care-nx-build.yml
 
-        - name: NX build
-          uses: ./.github/workflows/flower-care-nx-build.yml
+  flower-care-rpi-build-push-docker:
+    runs-on: ubuntu-latest
+    needs: flower-care-nx-build
+    steps:
+        - name: Download build results
+          uses: actions/download-artifact@v4
         
         - name: Set up Docker Buildx
           uses: docker/setup-buildx-action@v3
@@ -70,16 +69,12 @@ jobs:
             tags: ${{ steps.meta.outputs.tags }}
             labels: ${{ steps.meta.outputs.labels }}
 
-  flower-care-fe-build-and-deploy-github-pages:
+  flower-care-fe-deploy-github-pages:
     runs-on: ubuntu-latest
+    needs: flower-care-nx-build
     steps:
-        - name: Checkout
-          uses: actions/checkout@v4
-          with:
-            fetch-depth: 0
-
-        - name: NX build
-          uses: ./.github/workflows/flower-care-nx-build.yml
+        - name: Download build results
+          uses: actions/download-artifact@v4
 
         - name: GitHub Pages action
           # https://github.com/marketplace/actions/github-pages-action
