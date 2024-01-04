@@ -6,3 +6,16 @@
         <p-dropdown [options]="timeIntervals" optionLabel="name" (onChange)="changeInterval($event)" placeholder="Select an interval"></p-dropdown>
     </div>
 </p-toolbar>
+
+
+<div class="w-100 grid">
+    <div class="col-6">
+        <div>
+            Temperature
+        </div>
+        <p-chart type="line" [data]="data"></p-chart>
+    </div>
+    <div class="col-6">Sunlight</div>
+    <div class="col-6">Fertility</div>
+    <div class="col-6">Humidity</div>
+</div>
