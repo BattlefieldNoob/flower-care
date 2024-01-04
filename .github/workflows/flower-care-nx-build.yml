@@ -37,7 +37,7 @@ jobs:
         - name: 'Upload RPI Build Artifact'
           uses: actions/upload-artifact@v4
           with:
-            name: flower-care-dist
+            name: dist
             path: dist
             retention-days: 1
             if-no-files-found: error

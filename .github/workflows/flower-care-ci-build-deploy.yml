@@ -24,6 +24,7 @@ jobs:
   flower-care-rpi-build-push-docker:
     runs-on: ubuntu-latest
     needs: flower-care-nx-build
+    if: false
     permissions:
       packages: write
     steps:
@@ -60,8 +61,7 @@ jobs:
         
         - uses: docker/build-push-action@v5
           with:
-            # dist folder is omitted when downloading build results
-            file: apps/flower-care-rpi/Dockerfile
+            file: dist/apps/flower-care-rpi/Dockerfile
             context: .
             push: true
             platforms: linux/arm64
@@ -87,5 +87,4 @@ jobs:
             # Set a generated GITHUB_TOKEN for pushing to the remote branch.
             github_token: ${{ secrets.GITHUB_TOKEN }}
             # Set an input directory for deployment.
-            # dist folder is omitted when downloading build results
-            publish_dir: apps/flower-care-fe
+            publish_dir: dist/apps/flower-care-fe
