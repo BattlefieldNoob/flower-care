@@ -13,6 +13,10 @@ on:
 env:
     REGISTRY: ghcr.io
 
+permissions:
+  actions: read
+  contents: read
+
 jobs:
   flower-care-nx-build:
     uses: ./.github/workflows/flower-care-nx-build.yml
