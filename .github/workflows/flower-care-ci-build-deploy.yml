@@ -23,7 +23,12 @@ jobs:
   flower-care-rpi-build-and-deploy-docker:
     runs-on: ubuntu-latest
     steps:
-        - name: Checkout and NX build
+        - name: Checkout
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
+
+        - name: NX build
           uses: ./.github/workflows/flower-care-nx-build.yml
         
         - name: Set up Docker Buildx
@@ -68,7 +73,12 @@ jobs:
   flower-care-fe-build-and-deploy-github-pages:
     runs-on: ubuntu-latest
     steps:
-        - name: Checkout and NX build
+        - name: Checkout
+          uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
+
+        - name: NX build
           uses: ./.github/workflows/flower-care-nx-build.yml
 
         - name: GitHub Pages action
