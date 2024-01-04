@@ -8,6 +8,7 @@
     "codegen-fe": "graphql-codegen --config apps/flower-care-fe/codegen.ts"
   },
   "private": true,
+  "packageManager": "pnpm",
   "dependencies": {
     "@angular/animations": "17.0.8",
     "@angular/common": "17.0.8",
@@ -86,4 +87,3 @@
     "typescript": "5.2.2"
   }
 }
-
