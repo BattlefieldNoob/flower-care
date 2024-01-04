@@ -20,14 +20,12 @@ permissions:
   packages: write
 
 jobs:
-  build-with-docker-engine:
+  flower-care-rpi-build-and-deploy-docker:
     runs-on: ubuntu-latest
     steps:
-        - name: Checkout
-          uses: actions/checkout@v4
-          with:
-            fetch-depth: 0
-
+        - name: Checkout and NX build
+          uses: ./.github/workflows/flower-care-nx-build.yml
+        
         - name: Set up Docker Buildx
           uses: docker/setup-buildx-action@v3
 
@@ -37,26 +35,7 @@ jobs:
             registry: ${{ env.REGISTRY }}
             username: ${{ github.actor }}
             password: ${{ secrets.GITHUB_TOKEN }}
-
-        - uses: pnpm/action-setup@v2
-          with:
-            version: 8
-
-        - uses: actions/setup-node@v4
-          with:
-            cache: 'pnpm'
-            node-version-file: '.nvmrc'
-            cache-dependency-path: 'pnpm-lock.yaml'
-
-        - name: 'Install Dependencies'
-          run: pnpm install --frozen-lockfile --prefer-frozen-lockfile --ignore-scripts
-
-        - name: Derive appropriate SHAs for base and head for `nx affected` commands
-          uses: nrwl/nx-set-shas@v3
-
-        - name: 'Nx Build'
-          run: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=build --configuration=production --parallel=2
-        
+            
         - name: 'Docker meta'
           id: meta
           uses: docker/metadata-action@v5
@@ -85,3 +64,18 @@ jobs:
             cache-to: type=gha,mode=max
             tags: ${{ steps.meta.outputs.tags }}
             labels: ${{ steps.meta.outputs.labels }}
+
+  flower-care-fe-build-and-deploy-github-pages:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout and NX build
+          uses: ./.github/workflows/flower-care-nx-build.yml
+
+        - name: GitHub Pages action
+          # https://github.com/marketplace/actions/github-pages-action
+          uses: peaceiris/actions-gh-pages@v3
+          with:
+            # Set a generated GITHUB_TOKEN for pushing to the remote branch.
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            # Set an input directory for deployment.
+            publish_dir: dist/apps/flower-care-fe

@@ -1,26 +1,14 @@
-name: Flower-care-ci FE build and deploy
-
 on:
-  push:
-    #branches:
-    #  - main
-    tags:
-      - "v*.*.*"
-  pull_request:
-    branches:
-      - main
-
-env:
-    REGISTRY: ghcr.io
+    workflow_call:
 
 # Needed for nx-set-shas within nx-cloud-main.yml, when run on the main branch
 permissions:
-  actions: read
-  contents: read
-  packages: write
+    actions: read
+    contents: read
+    packages: write
 
 jobs:
-  build-with-docker-engine:
+  build:
     runs-on: ubuntu-latest
     steps:
         - name: Checkout
@@ -47,11 +35,3 @@ jobs:
         - name: 'Nx Build'
           run: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=build --configuration=production --parallel=2
         
-        - name: GitHub Pages action
-          # https://github.com/marketplace/actions/github-pages-action
-          uses: peaceiris/actions-gh-pages@v3
-          with:
-            # Set a generated GITHUB_TOKEN for pushing to the remote branch.
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-            # Set an input directory for deployment.
-            publish_dir: dist/apps/flower-care-fe
