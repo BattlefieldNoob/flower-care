@@ -37,17 +37,8 @@ jobs:
         - name: 'Upload RPI Build Artifact'
           uses: actions/upload-artifact@v4
           with:
-            name: flower-care-rpi-dist
-            path: dist/apps/flower-care-rpi
-            retention-days: 1
-            if-no-files-found: error
-            compression-level: 0 # no compression
-    
-        - name: 'Upload FE Build Artifact'
-          uses: actions/upload-artifact@v4
-          with:
-            name: flower-care-fe-dist
-            path: dist/apps/flower-care-fe
+            name: flower-care-dist
+            path: dist
             retention-days: 1
             if-no-files-found: error
             compression-level: 0 # no compression

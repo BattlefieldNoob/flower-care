@@ -27,15 +27,8 @@ jobs:
     permissions:
       packages: write
     steps:
-        # Checkout is needed for the dockerfile to be available
-        - name: Checkout
-          uses: actions/checkout@v4
-
         - name: Download build results
           uses: actions/download-artifact@v4
-          with:
-            name: flower-care-rpi-dist
-            path: dist/apps/flower-care-rpi
 
         - name: Set up Docker Buildx
           uses: docker/setup-buildx-action@v3
@@ -67,7 +60,7 @@ jobs:
         
         - uses: docker/build-push-action@v5
           with:
-            file: ./apps/flower-care-rpi/Dockerfile
+            file: dist/apps/flower-care-rpi/Dockerfile
             context: .
             push: true
             platforms: linux/arm64
@@ -85,9 +78,6 @@ jobs:
     steps:
         - name: Download build results
           uses: actions/download-artifact@v4
-          with:
-            name: flower-care-fe-dist
-            path: dist/apps/flower-care-fe
 
         - name: GitHub Pages action
             # https://github.com/marketplace/actions/github-pages-action
