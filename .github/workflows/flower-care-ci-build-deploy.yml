@@ -60,7 +60,8 @@ jobs:
         
         - uses: docker/build-push-action@v5
           with:
-            file: dist/apps/flower-care-rpi/Dockerfile
+            # dist folder is omitted when downloading build results
+            file: apps/flower-care-rpi/Dockerfile
             context: .
             push: true
             platforms: linux/arm64
@@ -86,4 +87,5 @@ jobs:
             # Set a generated GITHUB_TOKEN for pushing to the remote branch.
             github_token: ${{ secrets.GITHUB_TOKEN }}
             # Set an input directory for deployment.
-            publish_dir: dist/apps/flower-care-fe
+            # dist folder is omitted when downloading build results
+            publish_dir: apps/flower-care-fe
