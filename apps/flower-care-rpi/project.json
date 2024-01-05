@@ -19,7 +19,8 @@
         "main": "apps/flower-care-rpi/src/main.ts",
         "tsConfig": "apps/flower-care-rpi/tsconfig.app.json",
         "assets": [
-          "apps/flower-care-rpi/src/assets"
+          "apps/flower-care-rpi/src/assets",
+          "apps/flower-care-rpi/Dockerfile"
         ],
         "generatePackageJson": true,
         "bundle": true,

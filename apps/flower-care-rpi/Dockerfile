@@ -12,11 +12,12 @@ RUN addgroup --system flower-care-rpi && \
           useradd --system -g flower-care-rpi flower-care-rpi
 
 RUN apt update && apt install -y build-essential libudev-dev git
-#RUN apk update && apk add --no-cache build-base linux-headers eudev-dev
 
-COPY dist/apps/flower-care-rpi/package.json dist/apps/flower-care-rpi/yarn.lock ./flower-care-rpi/
+RUN corepack enable
 
-RUN cd flower-care-rpi && yarn install --frozen-lockfile --prefer-offline
+COPY dist/apps/flower-care-rpi/package.json dist/apps/flower-care-rpi/pnpm-lock.yaml ./flower-care-rpi/
+
+RUN cd flower-care-rpi && pnpm install --no-frozen-lockfile
 
 COPY dist/apps/flower-care-rpi flower-care-rpi
 

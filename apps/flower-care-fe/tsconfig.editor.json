@@ -1,6 +1,6 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/graphql/all-readings-between.mutation.graphql"],
   "compilerOptions": {
     "types": ["jest", "node"]
   }
