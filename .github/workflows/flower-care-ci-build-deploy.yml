@@ -24,7 +24,6 @@ jobs:
   flower-care-rpi-build-push-docker:
     runs-on: ubuntu-latest
     needs: flower-care-nx-build
-    if: false
     permissions:
       packages: write
     steps:
