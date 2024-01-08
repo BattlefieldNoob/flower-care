@@ -1,0 +1,8 @@
+mutation addReadings($data:[AddReadingsInput!]!){
+    addReadings(input: $data){
+        numUids
+        readings{
+            id
+        }
+    }
+}

@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { gql } from 'apollo-angular';
 import { Injectable } from '@angular/core';
 import * as Apollo from 'apollo-angular';
@@ -474,7 +473,7 @@ export const AllReadingsBetweenDocument = gql`
     providedIn: 'root'
   })
   export class AllReadingsBetweenGQL extends Apollo.Query<AllReadingsBetweenQuery, AllReadingsBetweenQueryVariables> {
-    override document = AllReadingsBetweenDocument;
+    document = AllReadingsBetweenDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

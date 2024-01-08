@@ -1,48 +1,15 @@
 import { Handler } from '@netlify/functions'
-import fetch from 'cross-fetch';
-import { ApolloClient, gql, InMemoryCache, HttpLink } from '@apollo/client/core';
+import { getSdk }  from '@flower-care/libs/dgraph-database';
+import { GraphQLClient } from 'graphql-request'
 
-interface AddReadingsInput {
-    moisture: number
-    fertility: number
-    sunlight: number
-    temperature: number
-    battery: number
-    ts: string
-}
 
-interface AddReadingsPayload {
-    numUids: number
-}
-
-const CREATE_READINGS = gql`
-    mutation addReadings($data:[AddReadingsInput!]!){
-        addReadings(input: $data){
-            numUids
-            readings{
-                id
-            }
-        }
-    }
-`;
-
-const apolloClient = new ApolloClient({
-    link: new HttpLink({ uri: "https://red-tree.eu-central-1.aws.cloud.dgraph.io/graphql", fetch }),
-    cache: new InMemoryCache(),
-})
+const client = new GraphQLClient("https://red-tree.eu-central-1.aws.cloud.dgraph.io/graphql", { headers: {} })
 
 const sendDataToDgraph = async (requestBody: string) => {
     try {
-        const reading = JSON.parse(requestBody) as AddReadingsInput
-
-        console.log(reading)
-        const result = await apolloClient.mutate<{ addReadings: AddReadingsPayload }, { data: AddReadingsInput }>
-            ({
-                mutation: CREATE_READINGS,
-                variables: { data: reading }
-            })
-        console.log('result:', result.data)
-        console.log('errors:', result.errors)
+        const sdk = getSdk(client)
+        const result = await sdk.addReadings({ data: JSON.parse(requestBody) })
+        console.log('result:', result.addReadings)
     } catch (error) {
         console.log(error)
         console.log(requestBody)

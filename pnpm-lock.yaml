@@ -32,9 +32,6 @@ importers:
       '@angular/router':
         specifier: 17.0.8
         version: 17.0.8(@angular/common@17.0.8)(@angular/core@17.0.8)(@angular/platform-browser@17.0.8)(rxjs@7.8.1)
-      '@apollo/client':
-        specifier: ^3.8.8
-        version: 3.8.8(graphql@16.8.1)
       '@netlify/functions':
         specifier: ^2.4.1
         version: 2.4.1
@@ -56,6 +53,12 @@ importers:
       graphql:
         specifier: ^16.8.1
         version: 16.8.1
+      graphql-request:
+        specifier: 6.1.0
+        version: 6.1.0(graphql@16.8.1)
+      graphql-tag:
+        specifier: 2.12.6
+        version: 2.12.6(graphql@16.8.1)
       miflora:
         specifier: https://github.com/BattlefieldNoob/miflora.git#7f80c2726657441c64a47309d29bc392d144988c
         version: github.com/BattlefieldNoob/miflora/7f80c2726657441c64a47309d29bc392d144988c
@@ -108,24 +111,6 @@ importers:
       '@gnuechtel/nx-cucumber':
         specifier: ^1.0.0
         version: 1.0.0(@cucumber/cucumber@10.1.0)(@cucumber/messages@22.0.0)(@playwright/test@1.40.1)(cucumber-html-reporter@7.1.1)(debug@4.3.4)(nx@17.2.8)(playwright-core@1.40.1)(playwright@1.40.1)
-      '@graphql-codegen/cli':
-        specifier: 5.0.0
-        version: 5.0.0(@types/node@20.10.5)(graphql@16.8.1)(typescript@5.2.2)
-      '@graphql-codegen/introspection':
-        specifier: 4.0.0
-        version: 4.0.0(graphql@16.8.1)
-      '@graphql-codegen/typescript':
-        specifier: ^4.0.1
-        version: 4.0.1(graphql@16.8.1)
-      '@graphql-codegen/typescript-apollo-angular':
-        specifier: 4.0.0
-        version: 4.0.0(graphql@16.8.1)
-      '@graphql-codegen/typescript-operations':
-        specifier: ^4.0.1
-        version: 4.0.1(graphql@16.8.1)
-      '@graphql-codegen/typescript-resolvers':
-        specifier: ^4.0.1
-        version: 4.0.1(graphql@16.8.1)
       '@nx-tools/container-metadata':
         specifier: ^5.1.0
         version: 5.1.0(@nx/devkit@17.2.8)(dotenv@16.3.1)(tslib@2.6.2)
@@ -230,6 +215,33 @@ importers:
         version: 5.2.2
 
   libs/data-models: {}
+
+  libs/dgraph-database:
+    devDependencies:
+      '@graphql-codegen/cli':
+        specifier: 5.0.0
+        version: 5.0.0(@types/node@20.10.5)(graphql@16.8.1)(typescript@5.2.2)
+      '@graphql-codegen/introspection':
+        specifier: 4.0.0
+        version: 4.0.0(graphql@16.8.1)
+      '@graphql-codegen/typescript':
+        specifier: ^4.0.1
+        version: 4.0.1(graphql@16.8.1)
+      '@graphql-codegen/typescript-apollo-angular':
+        specifier: 4.0.0
+        version: 4.0.0(graphql@16.8.1)
+      '@graphql-codegen/typescript-apollo-client-helpers':
+        specifier: 3.0.0
+        version: 3.0.0(graphql@16.8.1)
+      '@graphql-codegen/typescript-graphql-request':
+        specifier: 6.1.0
+        version: 6.1.0(graphql-request@6.1.0)(graphql-tag@2.12.6)(graphql@16.8.1)
+      '@graphql-codegen/typescript-operations':
+        specifier: ^4.0.1
+        version: 4.0.1(graphql@16.8.1)
+      '@graphql-codegen/typescript-resolvers':
+        specifier: ^4.0.1
+        version: 4.0.1(graphql@16.8.1)
 
 packages:
 
@@ -4495,6 +4507,43 @@ packages:
       - supports-color
     dev: true
 
+  /@graphql-codegen/typescript-apollo-client-helpers@3.0.0(graphql@16.8.1):
+    resolution: {integrity: sha512-4qAJ34Ebz0G0u0zt0boXHG3ktLp1P+DrCvYSI2dKJXF09VUDW+PqJfTzvDnxCRBgIvAfXrcZc1DJOx+tBDYKOg==}
+    engines: {node: '>= 16.0.0'}
+    peerDependencies:
+      graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
+    dependencies:
+      '@graphql-codegen/plugin-helpers': 3.1.2(graphql@16.8.1)
+      '@graphql-codegen/visitor-plugin-common': 2.13.1(graphql@16.8.1)
+      auto-bind: 4.0.0
+      change-case-all: 1.0.15
+      graphql: 16.8.1
+      tslib: 2.6.2
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+    dev: true
+
+  /@graphql-codegen/typescript-graphql-request@6.1.0(graphql-request@6.1.0)(graphql-tag@2.12.6)(graphql@16.8.1):
+    resolution: {integrity: sha512-hMhBazvdSQWuOrH6GnYew8zb9wDq9le0o3tPu07if/v97LVVKsVfPNcMG/cTLYZufaog9o2jScLbyo17HEqicg==}
+    engines: {node: '>= 16.0.0'}
+    peerDependencies:
+      graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
+      graphql-request: ^6.0.0
+      graphql-tag: ^2.0.0
+    dependencies:
+      '@graphql-codegen/plugin-helpers': 3.1.2(graphql@16.8.1)
+      '@graphql-codegen/visitor-plugin-common': 2.13.1(graphql@16.8.1)
+      auto-bind: 4.0.0
+      graphql: 16.8.1
+      graphql-request: 6.1.0(graphql@16.8.1)
+      graphql-tag: 2.12.6(graphql@16.8.1)
+      tslib: 2.6.2
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
+    dev: true
+
   /@graphql-codegen/typescript-operations@4.0.1(graphql@16.8.1):
     resolution: {integrity: sha512-GpUWWdBVUec/Zqo23aFLBMrXYxN2irypHqDcKjN78JclDPdreasAEPcIpMfqf4MClvpmvDLy4ql+djVAwmkjbw==}
     peerDependencies:
@@ -5387,7 +5436,7 @@ packages:
       detect-libc: 2.0.2
       https-proxy-agent: 5.0.1(supports-color@9.4.0)
       make-dir: 3.1.0
-      node-fetch: 2.6.12
+      node-fetch: 2.7.0
       nopt: 5.0.0
       npmlog: 5.0.1
       rimraf: 3.0.2
@@ -6989,7 +7038,7 @@ packages:
       '@octokit/request-error': 3.0.3
       '@octokit/types': 9.3.2
       is-plain-object: 5.0.0
-      node-fetch: 2.6.12
+      node-fetch: 2.7.0
       universal-user-agent: 6.0.1
     transitivePeerDependencies:
       - encoding
@@ -10824,7 +10873,6 @@ packages:
       node-fetch: 2.7.0
     transitivePeerDependencies:
       - encoding
-    dev: true
 
   /cross-fetch@4.0.0:
     resolution: {integrity: sha512-e4a5N8lVvuLgAWgnCrLr2PP0YyDOTHa9H/Rj54dirp61qXnNq46m82bRhNqIA5VccJtWBvPTFRV3TtvHUKPB1g==}
@@ -13122,7 +13170,6 @@ packages:
       graphql: 16.8.1
     transitivePeerDependencies:
       - encoding
-    dev: true
 
   /graphql-tag@2.12.6(graphql@16.8.1):
     resolution: {integrity: sha512-FdSNcu2QQcWnM2VNvSCCDCVS5PpPqpzgFT8+GXzqJuoDd0CBncxCY278u4mhRO7tMgo2JjgJA5aZ+nWSQ/Z+xg==}
@@ -16201,6 +16248,7 @@ packages:
         optional: true
     dependencies:
       whatwg-url: 5.0.0
+    dev: true
 
   /node-fetch@2.7.0:
     resolution: {integrity: sha512-c4FRfUm/dbcWZ7U+1Wq0AwCyFL+3nt2bEw05wfxSz+DWpWsitgmSgYmy2dQdWyKC1694ELPqMs/YzUSNozLt8A==}
