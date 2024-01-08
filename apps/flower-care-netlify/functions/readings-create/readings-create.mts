@@ -1,7 +1,6 @@
+import { getSdk } from '@flower-care/libs/dgraph-database'
 import { Handler } from '@netlify/functions'
-import { getSdk }  from '@flower-care/libs/dgraph-database';
 import { GraphQLClient } from 'graphql-request'
-
 
 const client = new GraphQLClient("https://red-tree.eu-central-1.aws.cloud.dgraph.io/graphql", { headers: {} })
 

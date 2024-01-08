@@ -1,5 +1,5 @@
 {
-  "name": "dgraph-database",
+  "name": "libs/dgraph-database",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/dgraph-database/src",
   "projectType": "library",
