@@ -473,7 +473,7 @@ export const AllReadingsBetweenDocument = gql`
     providedIn: 'root'
   })
   export class AllReadingsBetweenGQL extends Apollo.Query<AllReadingsBetweenQuery, AllReadingsBetweenQueryVariables> {
-    document = AllReadingsBetweenDocument;
+    override document = AllReadingsBetweenDocument;
     
     constructor(apollo: Apollo.Apollo) {
       super(apollo);

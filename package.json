@@ -18,6 +18,7 @@
     "@angular/platform-browser": "17.0.8",
     "@angular/platform-browser-dynamic": "17.0.8",
     "@angular/router": "17.0.8",
+    "@apollo/client": "^3.8.10",
     "@netlify/functions": "^2.4.1",
     "@nx/angular": "17.2.8",
     "apollo-angular": "^6.0.0",
@@ -25,13 +26,13 @@
     "cross-fetch": "^4.0.0",
     "effect": "^2.0.0-next.62",
     "graphql": "^16.8.1",
+    "graphql-request": "6.1.0",
     "miflora": "https://github.com/BattlefieldNoob/miflora.git#7f80c2726657441c64a47309d29bc392d144988c",
     "primeflex": "^3.3.1",
     "primeng": "^17.3.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
-    "zone.js": "0.14.2",
-    "graphql-request": "6.1.0"
+    "zone.js": "0.14.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "17.0.8",

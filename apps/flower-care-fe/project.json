@@ -26,7 +26,10 @@
         "styles": [
           "apps/flower-care-fe/src/styles.scss"
         ],
-        "scripts": []
+        "scripts": [],
+        "externalDependencies": [
+          "react"
+        ]
       },
       "configurations": {
         "production": {
