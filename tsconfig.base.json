@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@flower-care/libs/dgraph-database": ["libs/dgraph-database/src/index.ts"],
+      "@flower-care/libs/dgraph-database-angular": ["libs/dgraph-database/src/index_angular.ts"],
       "@flower-care/libs/data-models": ["libs/data-models/src/index.ts"]
     }
   },
