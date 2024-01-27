@@ -37,14 +37,10 @@
     },
     "deploy-functions": {
       "dependsOn": ["lint"],
-      "command": "npx netlify deploy --site hungry-lewin-8de986",
-      "options": {
-        "cwd": "apps/flower-care-netlify"
-      },
+      "command": "npx netlify deploy --filter flower-care-netlify",
       "configurations": {
         "production": {
-          "command": "npx netlify deploy --site hungry-lewin-8de986 --prod",
-          "cwd": "apps/flower-care-netlify"
+          "command": "npx netlify deploy --filter flower-care-netlify --prod"
         }
       }
     }
