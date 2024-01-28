@@ -12,7 +12,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { DropdownModule } from 'primeng/dropdown';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChartModule } from 'primeng/chart';
-import { InMemoryCache } from '@apollo/client';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 
 
 @NgModule({
