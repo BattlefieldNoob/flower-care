@@ -1,7 +1,5 @@
-/* eslint-disable */
-import { gql } from 'apollo-angular';
-import { Injectable } from '@angular/core';
-import * as Apollo from 'apollo-angular';
+import { GraphQLClient, gql } from 'graphql-request';
+import { GraphQLClientRequestHeaders } from 'node_modules/graphql-request/build/cjs/types';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -16,15 +14,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  /**
-   * The DateTime scalar type represents date and time as a string in RFC3339 format.
-   * For example: "1985-04-12T23:20:50.52Z" represents 20 mins 50.52 secs after the 23rd hour of Apr 12th 1985 in UTC.
-   */
   DateTime: { input: any; output: any; }
-  /**
-   * The Int64 scalar type represents a signed 64‐bit numeric non‐fractional value.
-   * Int64 can represent values in range [-(2^63),(2^63 - 1)].
-   */
   Int64: { input: any; output: any; }
 };
 
@@ -449,34 +439,35 @@ export type WithinFilter = {
   polygon: PolygonRef;
 };
 
-export type AllReadingsBetweenQueryVariables = Exact<{
-  min: Scalars['DateTime']['input'];
-  max: Scalars['DateTime']['input'];
+export type AddReadingsMutationVariables = Exact<{
+  data: Array<AddReadingsInput> | AddReadingsInput;
 }>;
 
 
-export type AllReadingsBetweenQuery = { __typename?: 'Query', queryReadings?: Array<{ __typename?: 'Readings', ts?: any | null, battery: number, moisture: number, fertility: number, sunlight: number, temperature: number } | null> | null };
+export type AddReadingsMutation = { __typename?: 'Mutation', addReadings?: { __typename?: 'AddReadingsPayload', numUids?: number | null, readings?: Array<{ __typename?: 'Readings', id: string } | null> | null } | null };
 
-export const AllReadingsBetweenDocument = gql`
-    query AllReadingsBetween($min: DateTime!, $max: DateTime!) {
-  queryReadings(filter: {ts: {between: {min: $min, max: $max}}}) {
-    ts
-    battery
-    moisture
-    fertility
-    sunlight
-    temperature
+
+export const AddReadingsDocument = gql`
+    mutation addReadings($data: [AddReadingsInput!]!) {
+  addReadings(input: $data) {
+    numUids
+    readings {
+      id
+    }
   }
 }
     `;
 
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class AllReadingsBetweenGQL extends Apollo.Query<AllReadingsBetweenQuery, AllReadingsBetweenQueryVariables> {
-    override document = AllReadingsBetweenDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
+export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string, variables?: any) => Promise<T>;
+
+
+const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType, variables) => action();
+
+export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
+  return {
+    addReadings(variables: AddReadingsMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<AddReadingsMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<AddReadingsMutation>(AddReadingsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'addReadings', 'mutation', variables);
     }
-  }
+  };
+}
+export type Sdk = ReturnType<typeof getSdk>;

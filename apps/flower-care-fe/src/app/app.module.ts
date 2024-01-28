@@ -7,12 +7,12 @@ import { NxWelcomeComponent } from './nx-welcome.component';
 import { APOLLO_OPTIONS, ApolloModule } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
 import { HttpClientModule } from '@angular/common/http';
-import { InMemoryCache } from '@apollo/client/core';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { ToolbarModule } from 'primeng/toolbar';
 import { DropdownModule } from 'primeng/dropdown';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChartModule } from 'primeng/chart';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 
 
 @NgModule({

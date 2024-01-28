@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AllReadingsBetweenQuery, Readings } from '../generated/graphql';
 import { ModelAdapter } from './model-adapter';
+import { AllReadingsBetweenQuery } from '@flower-care/libs/dgraph-database-angular';
 
 export interface Sample {
     timestamp: string;

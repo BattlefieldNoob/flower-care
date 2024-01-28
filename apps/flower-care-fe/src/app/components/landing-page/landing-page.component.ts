@@ -1,8 +1,8 @@
 import { Component, inject } from "@angular/core";
 import { DropdownChangeEvent } from "primeng/dropdown";
-import { AllReadingsBetweenGQL } from "../../generated/graphql";
 import { Samples, SamplesAdapter } from "../../adapters/samples-adapter";
 import { map } from "rxjs/operators";
+import { AllReadingsBetweenGQL } from "@flower-care/libs/dgraph-database-angular";
 
 interface TimeInterval {
   name: string;
