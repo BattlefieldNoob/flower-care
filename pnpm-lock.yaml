@@ -35,6 +35,15 @@ importers:
       '@netlify/functions':
         specifier: ^2.4.1
         version: 2.4.1
+      '@ngrx/effects':
+        specifier: ~17.0.0
+        version: 17.0.1(@angular/core@17.0.8)(@ngrx/store@17.0.1)(rxjs@7.8.1)
+      '@ngrx/router-store':
+        specifier: ~17.0.0
+        version: 17.0.1(@angular/common@17.0.8)(@angular/core@17.0.8)(@angular/router@17.0.8)(@ngrx/store@17.0.1)(rxjs@7.8.1)
+      '@ngrx/store':
+        specifier: ~17.0.0
+        version: 17.0.1(@angular/core@17.0.8)(rxjs@7.8.1)
       '@nx/angular':
         specifier: 17.2.8
         version: 17.2.8(@angular-devkit/build-angular@17.0.8)(@angular-devkit/core@17.0.8)(@angular-devkit/schematics@17.0.8)(@schematics/angular@17.0.8)(@types/node@20.10.5)(debug@4.3.4)(esbuild@0.19.10)(eslint@8.56.0)(nx@17.2.8)(rxjs@7.8.1)(ts-node@10.9.2)(typescript@5.2.2)
@@ -111,6 +120,12 @@ importers:
       '@gnuechtel/nx-cucumber':
         specifier: ^1.0.0
         version: 1.0.0(@cucumber/cucumber@10.1.0)(@cucumber/messages@22.0.0)(@playwright/test@1.40.1)(cucumber-html-reporter@7.1.1)(debug@4.3.4)(nx@17.2.8)(playwright-core@1.40.1)(playwright@1.40.1)
+      '@ngrx/schematics':
+        specifier: ~17.0.0
+        version: 17.0.1
+      '@ngrx/store-devtools':
+        specifier: ~17.0.0
+        version: 17.0.1(@ngrx/store@17.0.1)(rxjs@7.8.1)
       '@nx-tools/container-metadata':
         specifier: ^5.1.0
         version: 5.1.0(@nx/devkit@17.2.8)(dotenv@16.3.1)(tslib@2.6.2)
@@ -5898,6 +5913,71 @@ packages:
       - encoding
       - supports-color
     dev: true
+
+  /@ngrx/effects@17.0.1(@angular/core@17.0.8)(@ngrx/store@17.0.1)(rxjs@7.8.1):
+    resolution: {integrity: sha512-U7ewZpUoJlLrWyZVyzAMU6Qfxmte7Noi9n/pJb5BR3pWmdHnU+VPs08xnSIQUa0US7K6dJJRTGtcEpEvv/IT4A==}
+    peerDependencies:
+      '@angular/core': ^17.0.0
+      '@ngrx/store': 17.0.1
+      rxjs: ^6.5.3 || ^7.5.0
+    dependencies:
+      '@angular/core': 17.0.8(rxjs@7.8.1)(zone.js@0.14.2)
+      '@ngrx/operators': 17.0.0-beta.0(rxjs@7.8.1)
+      '@ngrx/store': 17.0.1(@angular/core@17.0.8)(rxjs@7.8.1)
+      rxjs: 7.8.1
+      tslib: 2.6.2
+    dev: false
+
+  /@ngrx/operators@17.0.0-beta.0(rxjs@7.8.1):
+    resolution: {integrity: sha512-EbO8AONuQ6zo2v/mPyBOi4y0CTAp1x4Z+bx7ZF+Pd8BL5ma53BTCL1TmzaeK5zPUe0yApudLk9/ZbHXPnVox5A==}
+    peerDependencies:
+      rxjs: ^6.5.3 || ^7.4.0
+    dependencies:
+      rxjs: 7.8.1
+      tslib: 2.6.2
+    dev: false
+
+  /@ngrx/router-store@17.0.1(@angular/common@17.0.8)(@angular/core@17.0.8)(@angular/router@17.0.8)(@ngrx/store@17.0.1)(rxjs@7.8.1):
+    resolution: {integrity: sha512-O4kz/yvIaAfG0Hzloj24RqL17E1oddQ7wpxjU6UrTr/oZkX1/lIehaSxSJIVzq02vQWShIq0RFo/t8ac5mzqZQ==}
+    peerDependencies:
+      '@angular/common': ^17.0.0
+      '@angular/core': ^17.0.0
+      '@angular/router': ^17.0.0
+      '@ngrx/store': 17.0.1
+      rxjs: ^6.5.3 || ^7.5.0
+    dependencies:
+      '@angular/common': 17.0.8(@angular/core@17.0.8)(rxjs@7.8.1)
+      '@angular/core': 17.0.8(rxjs@7.8.1)(zone.js@0.14.2)
+      '@angular/router': 17.0.8(@angular/common@17.0.8)(@angular/core@17.0.8)(@angular/platform-browser@17.0.8)(rxjs@7.8.1)
+      '@ngrx/store': 17.0.1(@angular/core@17.0.8)(rxjs@7.8.1)
+      rxjs: 7.8.1
+      tslib: 2.6.2
+    dev: false
+
+  /@ngrx/schematics@17.0.1:
+    resolution: {integrity: sha512-yOQxy6PWKbxS2JhE54Li5qAJVruZGkUrsVCcx6pFKssKMGBG1R0EHBZ0BAmFtkiHvyHz3P/RUiaNf+UbWPPgIw==}
+    dev: true
+
+  /@ngrx/store-devtools@17.0.1(@ngrx/store@17.0.1)(rxjs@7.8.1):
+    resolution: {integrity: sha512-1/BrHmd1KnjEvZtUkmMeOAhftzTLCBxpk0KoVSnl7BFr0LGQZrYUTXHI3b6tzJ2igGuj0d9hk/JRMOXmYn/5WA==}
+    peerDependencies:
+      '@ngrx/store': 17.0.1
+      rxjs: ^6.5.3 || ^7.5.0
+    dependencies:
+      '@ngrx/store': 17.0.1(@angular/core@17.0.8)(rxjs@7.8.1)
+      rxjs: 7.8.1
+      tslib: 2.6.2
+    dev: true
+
+  /@ngrx/store@17.0.1(@angular/core@17.0.8)(rxjs@7.8.1):
+    resolution: {integrity: sha512-BmVzN+fqyz0ZrVEmJ+jrNwePMKcpNL49vb8sbQ3yDDftxgZz2HqRKFMexqlXpz5ixwK5LqTOblHNQOgi9irsTw==}
+    peerDependencies:
+      '@angular/core': ^17.0.0
+      rxjs: ^6.5.3 || ^7.5.0
+    dependencies:
+      '@angular/core': 17.0.8(rxjs@7.8.1)(zone.js@0.14.2)
+      rxjs: 7.8.1
+      tslib: 2.6.2
 
   /@ngtools/webpack@17.0.8(@angular/compiler-cli@17.0.8)(typescript@5.2.2)(webpack@5.89.0):
     resolution: {integrity: sha512-wx0XBMrbpDeailK2uIhp/ZVMC3GK3BWwJjUu5SbT4BFrcoi2Zd9/9m0RCBAY54UXLBCqKd+ih7pJ6JSvprZmWw==}
