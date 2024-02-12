@@ -63,7 +63,7 @@
     "@schematics/angular": "17.0.8",
     "@types/jest": "^29.5.11",
     "@types/node": "~20.10.5",
-    "@typescript-eslint/eslint-plugin": "6.16.0",
+    "@typescript-eslint/eslint-plugin": "6.21.0",
     "@typescript-eslint/parser": "6.16.0",
     "cucumber-html-reporter": "latest",
     "esbuild": "^0.19.10",
