@@ -193,8 +193,8 @@ importers:
         specifier: ^29.4.1
         version: 29.7.0
       jest-preset-angular:
-        specifier: 13.1.4
-        version: 13.1.4(@angular-devkit/build-angular@17.0.8)(@angular/compiler-cli@17.0.8)(@angular/core@17.0.8)(@angular/platform-browser-dynamic@17.0.8)(@babel/core@7.23.6)(jest@29.7.0)(typescript@5.2.2)
+        specifier: 14.0.3
+        version: 14.0.3(@angular-devkit/build-angular@17.0.8)(@angular/compiler-cli@17.0.8)(@angular/core@17.0.8)(@angular/platform-browser-dynamic@17.0.8)(@babel/core@7.23.6)(jest@29.7.0)(typescript@5.2.2)
       jsonc-eslint-parser:
         specifier: ^2.1.0
         version: 2.4.0
@@ -5480,7 +5480,7 @@ packages:
       '@opentelemetry/core': 1.19.0(@opentelemetry/api@1.7.0)
       '@sindresorhus/slugify': 2.2.1
       ansi-escapes: 6.2.0
-      chalk: 5.2.0
+      chalk: 5.3.0
       clean-stack: 4.2.0
       execa: 6.1.0
       fdir: 6.1.1
@@ -5551,7 +5551,7 @@ packages:
     engines: {node: ^14.16.0 || >=16.0.0}
     hasBin: true
     dependencies:
-      chalk: 5.2.0
+      chalk: 5.3.0
       cron-parser: 4.8.1
       deepmerge: 4.3.1
       dot-prop: 7.2.0
@@ -9790,7 +9790,7 @@ packages:
     dependencies:
       ansi-align: 3.0.1
       camelcase: 7.0.1
-      chalk: 5.2.0
+      chalk: 5.3.0
       cli-boxes: 3.0.0
       string-width: 5.1.2
       type-fest: 2.19.0
@@ -10466,7 +10466,7 @@ packages:
     resolution: {integrity: sha512-DP3FpjsiDDvnQC1OJBsdOJZPuy7r0o6sepY2T5M3L/d2nrE23O/ErFkEqyY3ngVL1ZhTj/H0pCMNObZGkEOaaQ==}
     engines: {node: '>=12.20.0'}
     dependencies:
-      chalk: 5.2.0
+      chalk: 5.3.0
       filter-obj: 3.0.0
       is-plain-obj: 4.1.0
       jest-validate: 27.5.1
@@ -10476,7 +10476,7 @@ packages:
     resolution: {integrity: sha512-Soe5lerRg3erMRgYC0EC696/8dMCGpBzcQchFfi55Yrkja8F+P7cUt0LVTIg7u5ob5BexLZ/F1kO+ejmv+nq8w==}
     engines: {node: '>=14.18.0'}
     dependencies:
-      chalk: 5.2.0
+      chalk: 5.3.0
       is-plain-obj: 4.1.0
     dev: true
 
@@ -13915,7 +13915,7 @@ packages:
     resolution: {integrity: sha512-ZYvCgrefwqoQ6yTyYUbQu64HsITZ3NfKX1lzaEYdkTDcfKzzCI/wthRRYKkdjHKFVgNiXKAKm65Zo1pk2as/QQ==}
     hasBin: true
     dependencies:
-      ci-info: 3.8.0
+      ci-info: 3.9.0
     dev: true
 
   /is-core-module@2.13.1:
@@ -14558,16 +14558,16 @@ packages:
     dependencies:
       jest-resolve: 29.7.0
 
-  /jest-preset-angular@13.1.4(@angular-devkit/build-angular@17.0.8)(@angular/compiler-cli@17.0.8)(@angular/core@17.0.8)(@angular/platform-browser-dynamic@17.0.8)(@babel/core@7.23.6)(jest@29.7.0)(typescript@5.2.2):
-    resolution: {integrity: sha512-XKeWa8Qt7p37SzlJ85qEXgig06SgkfrzV057X2GSMqfz/HLJmTUjMFkHJKe65ZaQumNQWCcXpxXREr6EfZ9bow==}
+  /jest-preset-angular@14.0.3(@angular-devkit/build-angular@17.0.8)(@angular/compiler-cli@17.0.8)(@angular/core@17.0.8)(@angular/platform-browser-dynamic@17.0.8)(@babel/core@7.23.6)(jest@29.7.0)(typescript@5.2.2):
+    resolution: {integrity: sha512-usgBL7x0rXMnMSx8iEFeOozj50W6fp+YAmQcQBUdAXhN+PAXRy4UXL6I/rfcAOU09rnnq7RKsLsmhpp/fFEuag==}
     engines: {node: ^14.15.0 || >=16.10.0}
     peerDependencies:
-      '@angular-devkit/build-angular': '>=13.0.0 <18.0.0'
-      '@angular/compiler-cli': '>=13.0.0 <18.0.0'
-      '@angular/core': '>=13.0.0 <18.0.0'
-      '@angular/platform-browser-dynamic': '>=13.0.0 <18.0.0'
+      '@angular-devkit/build-angular': '>=15.0.0 <18.0.0'
+      '@angular/compiler-cli': '>=15.0.0 <18.0.0'
+      '@angular/core': '>=15.0.0 <18.0.0'
+      '@angular/platform-browser-dynamic': '>=15.0.0 <18.0.0'
       jest: ^29.0.0
-      typescript: '>=4.4'
+      typescript: '>=4.8'
     dependencies:
       '@angular-devkit/build-angular': 17.0.8(@angular/compiler-cli@17.0.8)(@types/node@20.10.5)(debug@4.3.4)(jest-environment-jsdom@29.7.0)(jest@29.7.0)(stylus@0.59.0)(typescript@5.2.2)
       '@angular/compiler-cli': 17.0.8(@angular/compiler@17.0.8)(typescript@5.2.2)
@@ -15382,7 +15382,7 @@ packages:
     resolution: {integrity: sha512-l0x2DvrW294C9uDCoQe1VSU4gf529FkSZ6leBl4TiqZH/e+0R7hSfHQBNut2mNygDgHwvYHfFLn6Oxb3VWj2rA==}
     engines: {node: '>=12'}
     dependencies:
-      chalk: 5.2.0
+      chalk: 5.3.0
       is-unicode-supported: 1.3.0
     dev: true
 
@@ -16827,7 +16827,7 @@ packages:
     resolution: {integrity: sha512-ERAyNnZOfqM+Ao3RAvIXkYh5joP220yf59gVe2X/cI6SiCxIdi4c9HZKZD8R6q/RDXEje1THBju6iExiSsgJaQ==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dependencies:
-      chalk: 5.2.0
+      chalk: 5.3.0
       cli-cursor: 4.0.0
       cli-spinners: 2.9.2
       is-interactive: 2.0.0
@@ -20558,7 +20558,7 @@ packages:
     engines: {node: '>=14.16'}
     dependencies:
       boxen: 7.1.1
-      chalk: 5.2.0
+      chalk: 5.3.0
       configstore: 6.0.0
       has-yarn: 3.0.0
       import-lazy: 4.0.0
