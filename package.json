@@ -44,7 +44,7 @@
     "@angular-eslint/template-parser": "17.1.1",
     "@angular/cli": "~17.0.8",
     "@angular/compiler-cli": "17.0.8",
-    "@angular/language-service": "17.0.8",
+    "@angular/language-service": "17.2.2",
     "@cucumber/cucumber": "^10.1.0",
     "@gnuechtel/nx-cucumber": "^1.0.0",
     "@nx-tools/container-metadata": "^5.1.0",
