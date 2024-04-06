@@ -28,7 +28,6 @@
     "effect": "^2.0.0-next.62",
     "graphql": "^16.8.1",
     "graphql-request": "6.1.0",
-    "miflora": "https://github.com/BattlefieldNoob/miflora.git#7f80c2726657441c64a47309d29bc392d144988c",
     "primeflex": "^3.3.1",
     "primeng": "^17.3.0",
     "rxjs": "~7.8.0",

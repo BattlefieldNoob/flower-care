@@ -1,0 +1,38 @@
+{
+  "name": "@flower-care/miflora",
+  "version": "1.0.6",
+  "description": "Node.js package for the Xiaomi Plant Sensor Flower Care (Mi Flora)",
+  "main": "src/lib/miflora.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "xo && echo \"none yet\" && exit 1;"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChrisScheffler/miflora.git"
+  },
+  "keywords": [
+    "plant",
+    "sensor",
+    "monitor",
+    "miflora",
+    "mi",
+    "flora",
+    "xiaomi"
+  ],
+  "author": {
+    "name": "ChrisScheffler"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ChrisScheffler/miflora/issues"
+  },
+  "homepage": "https://github.com/ChrisScheffler/miflora#readme",
+  "dependencies": {
+    "@stoprocent/noble": "^1.13.6",
+    "debug": "^4.3.0"
+  },
+  "devDependencies": {
+    "xo": "^0.48.0"
+  }
+}
