@@ -5,14 +5,12 @@ const logDebug = require('debug')('miflora');
 const MiFloraDevice = require('./miflora-device');
 
 const getOpt = (options, value, def) => {
-  return options && typeof options[value] !== 'undefined'
-    ? options[value]
-    : def;
+  return (options && typeof options[value] !== 'undefined') ? options[value] : def;
 };
 
-const intToHex = (value) => {
+const intToHex = value => {
   const result = value.toString(16);
-  return result.length % 2 === 1 ? '0' + result : result;
+  return (result.length % 2 === 1) ? '0' + result : result;
 };
 
 const UUID_SERVICE_XIAOMI = 'fe95';
@@ -20,8 +18,8 @@ const UUID_SERVICE_XIAOMI = 'fe95';
 class MiFlora {
   constructor() {
     this._devices = {};
-    noble.on('stateChange', (state) => {
-      logDebug("adapter changed to to '%s'", state);
+    noble.on('stateChange', state => {
+      logDebug('adapter changed to to \'%s\'', state);
     });
     noble.on('scanStart', () => {
       logDebug('discovery started');
@@ -60,16 +58,13 @@ class MiFlora {
 
     return new Promise((resolve, reject) => {
       this._ensurePowerOnState().then(() => {
-        this._startScan(optAddresses, optDuration, optIgnoreUnknown).then(
-          () => {
-            this._stopScan().then(() => {
-              resolve(Object.values(this._devices));
-            });
-          },
-          (error) => {
-            reject(error);
-          },
-        );
+        this._startScan(optAddresses, optDuration, optIgnoreUnknown).then(() => {
+          this._stopScan().then(() => {
+            resolve(Object.values(this._devices));
+          });
+        }, error => {
+          reject(error);
+        });
       });
     });
   }
@@ -79,14 +74,14 @@ class MiFlora {
    * @private
    */
   _ensurePowerOnState() {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       if (noble.state === 'poweredOn') {
         resolve();
         return;
       }
 
       logDebug('waiting for adapter state change');
-      noble.on('stateChange', (state) => {
+      noble.on('stateChange', state => {
         if (state === 'poweredOn') {
           resolve();
         }
@@ -101,8 +96,8 @@ class MiFlora {
    */
   _checkDiscovered(addresses) {
     let result = true;
-    addresses.forEach((address) => {
-      result &= this._devices[address] !== undefined;
+    addresses.forEach(address => {
+      result &= (this._devices[address] !== undefined);
     });
     return result;
   }
@@ -114,11 +109,7 @@ class MiFlora {
     return new Promise((resolve, reject) => {
       logDebug('starting discovery with %sms duration', duration);
       if (addresses && addresses.length > 0) {
-        logDebug(
-          '(discovery will be stopped when %o %s found)',
-          addresses,
-          addresses.length === 1 ? 'is' : 'are',
-        );
+        logDebug('(discovery will be stopped when %o %s found)', addresses, addresses.length === 1 ? 'is' : 'are');
         if (this._checkDiscovered(addresses)) {
           resolve();
           return;
@@ -130,12 +121,10 @@ class MiFlora {
         resolve();
       }, duration);
 
-      noble.on('discover', (peripheral) => {
+      noble.on('discover', peripheral => {
         let deviceAddress = peripheral.address;
         if (deviceAddress === '') {
-          const serviceData = peripheral.advertisement.serviceData.find(
-            (item) => item.uuid === UUID_SERVICE_XIAOMI,
-          );
+          const serviceData = peripheral.advertisement.serviceData.find(item => item.uuid === UUID_SERVICE_XIAOMI);
           if (serviceData && serviceData.data && serviceData.data.length > 10) {
             for (let i = 10; i > 4; i--) {
               deviceAddress += intToHex(serviceData.data.readUInt8(i));
@@ -147,19 +136,13 @@ class MiFlora {
             logDebug('fixing peripheral with address %s', deviceAddress);
             peripheral.address = deviceAddress;
           } else {
-            logDebug(
-              'skipping unknown advertisment %o',
-              peripheral.advertisement,
-            );
+            logDebug('skipping unknown advertisment %o', peripheral.advertisement);
             return;
           }
         }
 
         deviceAddress = MiFloraDevice.normaliseAddress(peripheral.address);
-        if (
-          ignoreUnknown &&
-          !addresses.find((addr) => addr === deviceAddress)
-        ) {
+        if (ignoreUnknown && !addresses.find(addr => addr === deviceAddress)) {
           logDebug('ignoring device with address %s', deviceAddress);
           return;
         }
@@ -173,11 +156,7 @@ class MiFlora {
           }
         }
 
-        if (
-          addresses &&
-          addresses.length > 0 &&
-          this._checkDiscovered(addresses)
-        ) {
+        if (addresses && addresses.length > 0 && this._checkDiscovered(addresses)) {
           logDebug('found all requested devices, stopping discovery');
           if (timeout) {
             clearTimeout(timeout);
@@ -187,7 +166,7 @@ class MiFlora {
         }
       });
 
-      noble.startScanning([UUID_SERVICE_XIAOMI], true, (error) => {
+      noble.startScanning([UUID_SERVICE_XIAOMI], true, error => {
         if (error) {
           reject(error);
         }
@@ -199,7 +178,7 @@ class MiFlora {
    * @private
    */
   _stopScan() {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       noble.stopScanning(() => {
         return resolve();
       });

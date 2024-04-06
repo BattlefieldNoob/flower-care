@@ -10,7 +10,7 @@ const timeout = (timeout, promiseFuncs) => {
         setTimeout(() => {
           return reject(new Error('timeout'));
         }, timeout);
-      }),
+      })
     );
   }
 
@@ -28,7 +28,7 @@ const MODE_BUFFER_BLINK = Buffer.from('fdff', 'hex');
 const MODE_BUFFER_RESET = Buffer.from('d0aa', 'hex');
 const MODE_BUFFER_REALTIME = {
   Enable: Buffer.from('a01f', 'hex'),
-  Disable: Buffer.from('c01f', 'hex'),
+  Disable: Buffer.from('c01f', 'hex')
 };
 
 /**
@@ -53,10 +53,10 @@ class MiFloraDevice {
     this.type = type ? type : 'unknown';
     this.responseTemplate = {
       address: this.address,
-      type: this.type,
+      type: this.type
     };
     this.logDebug = debug('miflora:device:' + this.address);
-    peripheral.on('connect', (error) => {
+    peripheral.on('connect', error => {
       if (error) {
         this.logDebug('error while connecting to device: %s', error);
       } else {
@@ -64,7 +64,7 @@ class MiFloraDevice {
         this.isConnected = true;
       }
     });
-    peripheral.on('disconnect', (error) => {
+    peripheral.on('disconnect', error => {
       if (error) {
         this.logDebug('error while disconnecting: %s', error);
       } else {
@@ -128,18 +128,13 @@ class MiFloraDevice {
       this.logDebug('querying firmware information');
       try {
         await this.connect();
-        const data = await this._readCharacteristic(
-          this._firmwareCharacteristic,
-        );
+        const data = await this._readCharacteristic(this._firmwareCharacteristic);
         const response = this.responseTemplate;
         response.firmwareInfo = {
           battery: data.readUInt8(0),
-          firmware: data.toString('ascii', 2, data.length),
+          firmware: data.toString('ascii', 2, data.length)
         };
-        this.logDebug(
-          'successfully queried firmware information: %o',
-          response.firmwareInfo,
-        );
+        this.logDebug('successfully queried firmware information: %o', response.firmwareInfo);
         resolve(plain ? response.firmwareInfo : response);
       } catch (error) {
         reject(error);
@@ -159,12 +154,9 @@ class MiFloraDevice {
           temperature: data.readUInt16LE(0) / 10,
           lux: data.readUInt32LE(3),
           moisture: data.readUInt8(7),
-          fertility: data.readUInt16LE(8),
+          fertility: data.readUInt16LE(8)
         };
-        this.logDebug(
-          'successfully queried sensor values: %o',
-          response.sensorValues,
-        );
+        this.logDebug('successfully queried sensor values: %o', response.sensorValues);
         return resolve(plain ? response.sensorValues : response);
       } catch (error) {
         return reject(error);
@@ -258,13 +250,8 @@ class MiFloraDevice {
   _setRealtimeDataMode(enable) {
     return timeout(10000, async (resolve, reject) => {
       try {
-        this.logDebug(
-          '%s realtime data mode',
-          enable ? 'enabling' : 'disabling',
-        );
-        const buffer = enable
-          ? MODE_BUFFER_REALTIME.Enable
-          : MODE_BUFFER_REALTIME.Disable;
+        this.logDebug('%s realtime data mode', (enable ? 'enabling' : 'disabling'));
+        const buffer = enable ? MODE_BUFFER_REALTIME.Enable : MODE_BUFFER_REALTIME.Disable;
         return resolve(await this._setDeviceMode(buffer));
       } catch (error) {
         return reject(error);
@@ -276,32 +263,18 @@ class MiFloraDevice {
     return timeout(10000, async (resolve, reject) => {
       try {
         this.logDebug('resolving characteristic');
-        this._peripheral.discoverAllServicesAndCharacteristics(
-          (error, services, characteristics) => {
-            if (error) {
-              return reject(error);
-            }
+        this._peripheral.discoverAllServicesAndCharacteristics((error, services, characteristics) => {
+          if (error) {
+            return reject(error);
+          }
 
-            this.logDebug(
-              'successfully resolved characteristics (%d/%d)',
-              services.length,
-              characteristics.length,
-            );
-            this._service = this._peripheral.services.find(
-              (entry) => entry.uuid === UUID_SERVICE_DATA,
-            );
-            this._firmwareCharacteristic = this._service.characteristics.find(
-              (entry) => entry.uuid === UUID_CHARACTERISTIC_FIRMWARE,
-            );
-            this._modeCharacteristic = this._service.characteristics.find(
-              (entry) => entry.uuid === UUID_CHARACTERISTIC_MODE,
-            );
-            this._dataCharacteristic = this._service.characteristics.find(
-              (entry) => entry.uuid === UUID_CHARACTERISTIC_DATA,
-            );
-            return resolve();
-          },
-        );
+          this.logDebug('successfully resolved characteristics (%d/%d)', services.length, characteristics.length);
+          this._service = this._peripheral.services.find(entry => entry.uuid === UUID_SERVICE_DATA);
+          this._firmwareCharacteristic = this._service.characteristics.find(entry => entry.uuid === UUID_CHARACTERISTIC_FIRMWARE);
+          this._modeCharacteristic = this._service.characteristics.find(entry => entry.uuid === UUID_CHARACTERISTIC_MODE);
+          this._dataCharacteristic = this._service.characteristics.find(entry => entry.uuid === UUID_CHARACTERISTIC_DATA);
+          return resolve();
+        });
       } catch (error) {
         return reject(error);
       }
@@ -319,11 +292,7 @@ class MiFloraDevice {
             return reject(error);
           }
 
-          this.logDebug(
-            "successfully read value '0x%s' from characteristic %s",
-            data.toString('hex').toUpperCase(),
-            characteristic.uuid.toUpperCase(),
-          );
+          this.logDebug('successfully read value \'0x%s\' from characteristic %s', data.toString('hex').toUpperCase(), characteristic.uuid.toUpperCase());
           return resolve(data);
         });
       } catch (error) {
@@ -338,16 +307,12 @@ class MiFloraDevice {
   _writeCharacteristic(characteristic, data) {
     return timeout(10000, async (resolve, reject) => {
       try {
-        characteristic.write(data, false, (error) => {
+        characteristic.write(data, false, error => {
           if (error) {
             return reject(error);
           }
 
-          this.logDebug(
-            "successfully wrote value '0x%s' to characteristic %s",
-            data.toString('hex').toUpperCase(),
-            characteristic.uuid.toUpperCase(),
-          );
+          this.logDebug('successfully wrote value \'0x%s\' to characteristic %s', data.toString('hex').toUpperCase(), characteristic.uuid.toUpperCase());
           return resolve();
         });
       } catch (error) {
@@ -363,20 +328,14 @@ class MiFloraDevice {
    * @param {Peripheral} peripheral
    */
   static from(peripheral) {
-    if (
-      peripheral &&
-      peripheral.advertisement &&
-      peripheral.advertisement.serviceData
-    ) {
-      const dataItem = peripheral.advertisement.serviceData.find(
-        (item) => item.uuid === UUID_SERVICE_XIAOMI,
-      );
+    if (peripheral && peripheral.advertisement && peripheral.advertisement.serviceData) {
+      const dataItem = peripheral.advertisement.serviceData.find(item => item.uuid === UUID_SERVICE_XIAOMI);
       if (dataItem) {
         const productId = dataItem.data.readUInt16LE(2);
         switch (productId) {
           case 0x98:
             return new MiFloraDevice(peripheral, 'MiFloraMonitor');
-          case 0x015d:
+          case 0x015D:
             return new MiFloraDevice(peripheral, 'MiFloraPot');
           default:
         }
