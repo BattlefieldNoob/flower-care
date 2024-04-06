@@ -1,5 +1,5 @@
 import { Layer } from 'effect';
-import * as miflora from 'miflora';
+import miflora from '@flower-care/miflora';
 import { DiscoverOpt, MiFloraModule as MiFlora, MiFloraModule } from '../models/miflora-module.interface';
 import { DeviceSerialQueryResult } from '../models/device-serial-query-result.type';
 import { SensorQueryResult } from '../models/sensor-data-query-result.type';
