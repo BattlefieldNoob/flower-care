@@ -12,7 +12,10 @@
         "main": "libs/miflora/src/index.ts",
         "tsConfig": "libs/miflora/tsconfig.lib.json",
         "assets": ["libs/miflora/*.md"],
-        "format": ["cjs"]
+        "format": ["cjs"],
+        "external": [
+          "@flower-care/noble"
+        ]
       }
     },
     "lint": {

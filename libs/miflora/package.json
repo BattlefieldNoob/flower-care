@@ -29,7 +29,6 @@
   },
   "homepage": "https://github.com/ChrisScheffler/miflora#readme",
   "dependencies": {
-    "@stoprocent/noble": "^1.13.6",
     "debug": "^4.3.0"
   },
   "devDependencies": {

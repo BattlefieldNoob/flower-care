@@ -1,6 +1,6 @@
 'use strict';
 
-const noble = require('@stoprocent/noble');
+const noble = require('@flower-care/noble');
 const logDebug = require('debug')('miflora');
 const MiFloraDevice = require('./miflora-device');
 

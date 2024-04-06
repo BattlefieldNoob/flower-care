@@ -29,7 +29,10 @@
           "outExtension": {
             ".js": ".js"
           }
-        }
+        },
+        "external": [
+          "@flower-care/noble"
+        ]
       },
       "configurations": {
         "development": {

@@ -22,7 +22,8 @@
       "@flower-care/libs/dgraph-database-angular": [
         "libs/dgraph-database/src/index_angular.ts"
       ],
-      "@flower-care/miflora": ["libs/miflora/src/index.ts"]
+      "@flower-care/miflora": ["libs/miflora/src/index.ts"],
+      "@flower-care/noble": ["libs/noble/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
