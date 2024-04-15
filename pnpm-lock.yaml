@@ -103,8 +103,8 @@ importers:
         specifier: 17.0.8
         version: 17.0.8(@angular/compiler@17.0.8)(typescript@5.2.2)
       '@angular/language-service':
-        specifier: 17.0.8
-        version: 17.0.8
+        specifier: 17.3.4
+        version: 17.3.4
       '@cucumber/cucumber':
         specifier: ^10.1.0
         version: 10.1.0
@@ -644,8 +644,8 @@ packages:
       tslib: 2.6.2
     dev: false
 
-  /@angular/language-service@17.0.8:
-    resolution: {integrity: sha512-GvwoAuQVWMMTnkl8zuhimIJHs8XLRttjk+epGocvF7T6WbtDIGv74MW5ZfhLx6LXz0fcYKoFW7UB3RqDIXrMyQ==}
+  /@angular/language-service@17.3.4:
+    resolution: {integrity: sha512-CgLg/7P0+NEeGU+vqvoG0rh2ns5iyfi/UO4JTxN1iMjuFBAUhGHxjiItPy8cN2XK/dWgOhXAFe4oqxA4dMBp/Q==}
     engines: {node: ^18.13.0 || >=20.9.0}
     dev: true
 
