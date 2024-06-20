@@ -39,14 +39,14 @@ jobs:
             registry: ${{ env.REGISTRY }}
             username: ${{ github.actor }}
             password: ${{ secrets.GITHUB_TOKEN }}
-            
+
         - name: 'Docker meta'
           id: meta
           uses: docker/metadata-action@v5
           with:
             # list of Docker images to use as base name for tags
             images: |
-              ghcr.io/battlefieldnoob/flower-care-rpi           
+              ghcr.io/battlefieldnoob/flower-care-rpi
             # generate Docker tags based on the following events/attributes
             tags: |
               "type=schedule",
@@ -57,13 +57,13 @@ jobs:
               "type=semver,pattern={{version}}",
               "type=semver,pattern={{major}}.{{minor}}",
               "type=semver,pattern={{major}}"
-        
+
         - uses: docker/build-push-action@v5
           with:
             file: dist/apps/flower-care-rpi/Dockerfile
             context: .
             push: true
-            platforms: linux/arm64
+            platforms: linux/arm64,linux/amd64
             cache-from: type=gha
             cache-to: type=gha,mode=max
             tags: ${{ steps.meta.outputs.tags }}
