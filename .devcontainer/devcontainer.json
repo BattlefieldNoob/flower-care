@@ -30,13 +30,6 @@
 			"userUid": "1001",
 			"userGid": "1001"
 		},
-		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
-			"moby": true,
-			"installDockerBuildx": true,
-			"installDockerComposeSwitch": true,
-			"version": "latest",
-			"dockerDashComposeVersion": "v2"
-		},
 		"ghcr.io/devcontainers/features/git:1": {
 			"ppa": true,
 			"version": "latest"
