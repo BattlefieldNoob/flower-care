@@ -9,7 +9,7 @@ export interface DiscoverOpt {
     addresses: string[];
 }
 
-export interface MiFloraModule {
+export interface MiFlora {
     discover(opt: DiscoverOpt): Promise<MiFloraDevice[]>;
     connect(device: MiFloraDevice): Promise<MiFloraDevice>;
     disconnect(device: MiFloraDevice): Promise<void>;
@@ -17,4 +17,10 @@ export interface MiFloraModule {
     query(device: MiFloraDevice): Promise<SensorDataQueryResult>;
 }
 
-export const MiFloraModule = Context.Tag<MiFloraModule>();
+export class MiFloraModule extends Context.Tag("MiFloraModule")<MiFlora,{
+    discover(opt: DiscoverOpt): Promise<MiFloraDevice[]>;
+    connect(device: MiFloraDevice): Promise<MiFloraDevice>;
+    disconnect(device: MiFloraDevice): Promise<void>;
+    querySerial(device: MiFloraDevice): Promise<DeviceSerialQueryResult>;
+    query(device: MiFloraDevice): Promise<SensorDataQueryResult>;
+}>() {}

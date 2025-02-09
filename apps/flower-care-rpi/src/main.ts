@@ -1,5 +1,5 @@
 import { Effect, Schedule, pipe } from "effect"
-import { FlowerCareModule, FlowerCareModuleLive } from "./modules/flower-care.module";
+import { FlowerCare, FlowerCareModuleLive } from "./modules/flower-care.module";
 import { Do, bind } from "effect/Effect";
 import { MiFloraModuleLive } from "./modules/miflora-ble.module";
 import { MiFloraModuleTest } from "./modules/miflora-test.module";
@@ -18,7 +18,7 @@ const flowerCareMacAddress = 'C4:7C:8D:6C:D5:1D';
     const schedule = Schedule.fixed("30 minutes")
 
 
-    const program = FlowerCareModule.pipe(
+    const program = FlowerCare.pipe(
         Effect.flatMap((flowerCare) => {
             return pipe(
                 Do,

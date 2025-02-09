@@ -26,13 +26,14 @@
 			"installOhMyZsh": true,
 			"installOhMyZshConfig": true,
 			"upgradePackages": true,
+			"nonFreePackages": true,
 			"username": "devcontainer",
 			"userUid": "1001",
 			"userGid": "1001"
 		},
 		"ghcr.io/devcontainers/features/git:1": {
-			"ppa": true,
-			"version": "latest"
+			"version": "os-provided"
 		}
-	}
+	},
+	"postCreateCommand": "sudo apt update && sudo apt install -y build-essential"
 }

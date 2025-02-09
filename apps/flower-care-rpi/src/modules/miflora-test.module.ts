@@ -2,7 +2,7 @@ import { Layer } from "effect";
 import { MiFloraDevice } from "../models/miflora-device.interface";
 import { DeviceSerialQueryResult } from "../models/device-serial-query-result.type";
 import { SensorDataQueryResult } from "../models/sensor-data-query-result.type";
-import { MiFloraModule } from "../models/miflora-module.interface";
+import { MiFlora, MiFloraModule } from "../models/miflora-module.interface";
 
 
 const mockDevice: MiFloraDevice = {
@@ -43,7 +43,7 @@ const mockDevice: MiFloraDevice = {
 };
 
 
-const MiFloraTest: MiFloraModule = {
+const MiFloraTest: MiFlora = {
     discover: function (): Promise<MiFloraDevice[]> {
         console.log('Mock Discovering...');
         return Promise.resolve([mockDevice]);
