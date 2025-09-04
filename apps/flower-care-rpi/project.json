@@ -131,8 +131,7 @@
           ],
           "push": false
         },
-        "production": {
-        }
+        "production": {}
       }
     }
   },

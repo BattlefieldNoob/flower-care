@@ -10,20 +10,33 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2020", "dom"],
+    "lib": [
+      "es2020",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@flower-care/libs/data-models": ["libs/data-models/src/index.ts"],
+      "@flower-care/libs/data-models": [
+        "libs/data-models/src/index.ts"
+      ],
       "@flower-care/libs/dgraph-database": [
         "libs/dgraph-database/src/index.ts"
       ],
       "@flower-care/libs/dgraph-database-angular": [
         "libs/dgraph-database/src/index_angular.ts"
       ],
-      "@flower-care/miflora": ["libs/miflora/src/index.ts"]
-    }
+      "@flower-care/miflora": [
+        "libs/miflora/src/index.ts"
+      ]
+    },
+    "types": [
+      "bun-types"
+    ]
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }

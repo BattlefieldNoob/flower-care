@@ -28,7 +28,7 @@
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-    "postCreateCommand": "yarn install && sudo yarn playwright install-deps"
+  //"postCreateCommand": "pnpm install && sudo pnpm playwright install-deps"
 
 	// Configure tool-specific properties.
 	// "customizations": {},

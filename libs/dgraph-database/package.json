@@ -2,7 +2,6 @@
   "name": "@flower-care/dgraph-database",
   "version": "0.0.1",
   "scripts": {
-    "preinstall": "npx only-allow pnpm",
     "codegen-dgraph": "pnpm run update-graphql:fe & pnpm run update-graphql:netlify",
     "update-graphql:fe": "graphql-codegen --config fe-codegen.ts",
     "update-graphql:netlify": "graphql-codegen --config netlify-codegen.ts"
